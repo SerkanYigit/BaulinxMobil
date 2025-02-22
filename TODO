@@ -1,0 +1,33 @@
+
+Todo:
+ - bottomnavigationbar daki renklendirme de sari siyah olacak
+ - Renklendirme siyah(rgb(42, 46, 50);) ve sari(rgb(248 214 131);) üzerine olacak
+ - kullanici resimleri daha iceride olacak
+ - Proje ismi labellarin üzerine eklenicek, Appbar boyutu arttirilacak
+ -  Note sayfasi degisecek
+ - Ortadaki kart iclerine gerekli bilgiler eklenecek
+    - Olusan Hatalar
+    - 
+ - pdf sayfasinda sagdaki 4 butonu at.
+ - pdf sayfasinda label girme butonlari ekle
+ -  labellar yukari gelsin
+ - pdf ekrani komple kaplasin
+ - pdf icerik butonlari sari siyah olacak
+
+BottomNavigation:
+ - 1. Email  eklenecek
+ - 2. Chat
+ - 3. Calendar
+ - 4. Home / DashBoard
+ - 5. Ocr Search
+ - 6. Analiz
+ - 7. Kisisel Cloud 
+ - 
+
+- DEtay sayfasinda üst kisim ve user verileri gelmiyor.
+ - Detay sayfasinda kartlar yapilacak
+ - ana sayfa da yandaki butonlar ve yukaridaki butonlar ayarlanacak
+ - takvim sayfasinda butonun ic rengi sari ayarlanacak
+ - ocr sayfasinda buton renkleri sari ayarlanacak
+ - 
+

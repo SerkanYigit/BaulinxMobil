@@ -1,0 +1,8 @@
+parola: vir2elloffice
+first last name: serkan yigit
+organization untit: vir2ell
+organization: vir2ell
+istanbul
+türkiye
+tr
+en sonda bi parola daha istiyo girmeden enter

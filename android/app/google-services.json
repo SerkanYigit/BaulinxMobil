@@ -1,0 +1,30 @@
+{
+  "project_info": {
+    "project_number": "780109613041",
+    "firebase_url": "https://baulinx-9bfcd-default-rtdb.europe-west1.firebasedatabase.app",
+    "project_id": "baulinx-9bfcd",
+    "storage_bucket": "baulinx-9bfcd.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:780109613041:android:ff274a9f7811fab7a66650",
+        "android_client_info": {
+          "package_name": "com.baulinx"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDc5TaLIJnbQQSqHfaogORO_qU5oBetgTE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

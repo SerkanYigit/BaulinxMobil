@@ -1,0 +1,67 @@
+
+Todo:
+ - bottomnavigationbar daki renklendirme de sari siyah olacak
+ - Renklendirme siyah(rgb(42, 46, 50);) ve sari(rgb(248 214 131);) üzerine olacak
+ - kullanici resimleri daha iceride olacak
+ - Proje ismi labellarin üzerine eklenicek, Appbar boyutu arttirilacak
+ -  Note sayfasi degisecek
+ - Ortadaki kart iclerine gerekli bilgiler eklenecek
+    - Olusan Hatalar
+    - 
+ - pdf sayfasinda sagdaki 4 butonu at.
+ - pdf sayfasinda label girme butonlari ekle
+ -  labellar yukari gelsin
+ - pdf ekrani komple kaplasin
+ - pdf icerik butonlari sari siyah olacak
+
+BottomNavigation:
+ - 1. Email  eklenecek
+ - 2. Chat
+ - 3. Calendar
+ - 4. Home / DashBoard
+ - 5. Ocr Search
+ - 6. Analiz
+ - 7. Kisisel Cloud 
+ - 
+
+
+
+
+✔ 1. Uygulama ikon u degsitirilecek @done(25-02-24 13:32)
+✔ 2. Uygulama  acilisindaki openAi hata mesajlari kapatilacak @done(25-02-24 13:39)
+✔ 3. Uygulama bottomnavigationbar arka plan sari renk daha yuvarlak olacak @done(25-02-24 13:44)
+✔ 4. Uygulama bottomnavigationbar ikon boyutlari kucultulecek @done(25-02-24 13:49)
+✔ 6. Uygulama bottomnavigationbar home ikon png olsun @done(25-02-24 13:50)
+✔ 7. Uygulama dashboarda Users yazisini kaldir, userlarin cercevesini kaldir @done(25-02-24 13:53)
+✔ 8. Uygulama dashboarda Set Module title gidecek @done(25-02-24 13:53)
+- 9. Uygulama dashboarda modül ikonlari degisecek, renksiz olacak.
+✔ 10. Uygulama da InvoiceHistory e gitmeyecek. InvoicePage e gidecek @done(25-02-24 14:55)
+
+Detay Sayfasi
+✔ 1. Detay sayfasinda üst kisim da proje adini kaldir @done(25-02-25 16:04)
+- 2. Detay sayfasinda gezinti listview simetrik geri butonu ile 
+- 3. Detay sayfasinda Orta Kisim Serkan verecek
+- 4. Detay sayfasindan  da detaya gittiginde todos verisini bekliyor
+
+SERKAN DAn BEklenenler
+- Dashboard da Yüdelik kisim verisi. API den gelecek
+- Dashboard da Modüllerin ikonlari
+- Detay kisminda orta bölüm
+
+
+
+
+
+
+- Proje detay  itemlar arasi bosluk arttir
+- ikonlar a padding verilecek, border dan padding eklenecek
+- üst butonlari container icine al
+- üst butonlarin yüksekligi dusurulecek , boyut artikligi var
+- ikonlari cikartilacak
+
+
+
+
+- mangel page de listede resim ve checklist olmayacak
+- detay sayfasinda resim ve checklist olacak
+- detay sayfasinda yeni sayfa olacak

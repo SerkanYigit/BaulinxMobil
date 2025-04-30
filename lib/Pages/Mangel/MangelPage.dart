@@ -4,9 +4,11 @@ import 'dart:io';
 import 'package:board_datetime_picker/board_datetime_picker.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:expandable_richtext/expandable_rich_text.dart';
+import 'package:expansion_tile_card/expansion_tile_card.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_colorpicker/flutter_colorpicker.dart';
 import 'package:flutter_html/flutter_html.dart';
 import 'package:flutter_selectable_list/flutter_selectable_list.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
@@ -140,6 +142,7 @@ class _MangelPageState extends State<MangelPage> with TickerProviderStateMixin {
             isSelected: false,
           ));
         });
+        _checkedStates = List.generate(cboLabelsList.length, (index) => false);
       });
 
       setState(() {
@@ -167,9 +170,12 @@ class _MangelPageState extends State<MangelPage> with TickerProviderStateMixin {
   bool isFilter = false;
   ValueNotifier<DateTime> startDateNotifier = ValueNotifier(DateTime.now());
   ValueNotifier<DateTime> endDateNotifier = ValueNotifier(DateTime.now());
-
+  ValueNotifier<DateTime> remindDateNotifier = ValueNotifier(DateTime.now());
+  bool isRemind = false;
   final startController = BoardDateTimeController();
   final endController = BoardDateTimeController();
+  final remindDateController = BoardDateTimeController();
+
   Future<ResultCheckListUpdate> InsertOrUpdateTodoCheckList(
       int Id, int todoId, String Title, bool IsDone) async {
     return await _controllerTodo.InsertOrUpdateTodoCheckList(
@@ -241,7 +247,7 @@ class _MangelPageState extends State<MangelPage> with TickerProviderStateMixin {
 
   final _debouncer = DebouncerForSearch();
   bool showSearch = false;
-
+  var remindDateList;
   void handleDelete(BuildContext context, GenericTodo msg) {
     deleteMessageFunc(msg);
   }
@@ -288,6 +294,15 @@ class _MangelPageState extends State<MangelPage> with TickerProviderStateMixin {
     } else {
       endDateNotifier = ValueNotifier(DateTime.now());
     }
+    if (msg.remindDate != null) {
+      DateTime tempRemindDate =
+          new DateFormat("yyyy-MM-ddThh:mm:ss").parse(msg.remindDate!);
+
+      remindDateNotifier = ValueNotifier(tempRemindDate);
+    }
+    /*  else {
+      remindDateNotifier = ValueNotifier(DateTime.now());
+    } */
 
     return Slidable(
       key: const ValueKey(0),
@@ -363,7 +378,7 @@ class _MangelPageState extends State<MangelPage> with TickerProviderStateMixin {
                 msg.description!.isNullOrBlank!
                     ? Container()
                     : DescriptionWidget(msg.description!),
-
+//? Dates
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
@@ -438,8 +453,42 @@ class _MangelPageState extends State<MangelPage> with TickerProviderStateMixin {
                 msg.labelList!.length == 0
                     ? Container(color: Colors.blue)
                     : TagsWidgetListed(msg.labelList!),
-                Text("REMINDE DATE GELECEK",
-                    style: TextStyle(fontWeight: FontWeight.bold)),
+                SizedBox(
+                  height: 10,
+                ),
+
+                msg.remindDate != null
+                    ? Row(
+                        children: [
+                          SizedBox(
+                            width: Get.width / 3,
+                          ),
+                          Icon(
+                            Icons.notifications_off_outlined,
+                            color: Colors.black,
+                            size: 20,
+                          ),
+                          ValueListenableBuilder(
+                            valueListenable: remindDateNotifier,
+                            builder: (context, data, _) {
+                              return Text(
+                                BoardDateFormat(
+                                    DateTimePickerType.date.formatter2(
+                                  withSecond: DateTimePickerType.time ==
+                                      DateTimePickerType.date,
+                                )).format(data),
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .bodyMedium
+                                    ?.copyWith(
+                                      fontWeight: FontWeight.normal,
+                                    ),
+                              );
+                            },
+                          ),
+                        ],
+                      )
+                    : Container(),
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 20),
                   child: Divider(),
@@ -506,7 +555,38 @@ class _MangelPageState extends State<MangelPage> with TickerProviderStateMixin {
     );
   }
 
-  Widget MessageWidget(BuildContext context) {
+  Color _currentColor = Colors.blue;
+
+  void _showColorPicker() {
+    showDialog(
+      context: context,
+      builder: (BuildContext dialogContext) => AlertDialog(
+        title: Text("Bir renk seçin"),
+        content: SingleChildScrollView(
+          child: ColorPicker(
+            pickerColor: _currentColor,
+            onColorChanged: (color) {
+              setState(() {
+                _currentColor = color;
+              });
+            },
+          ),
+        ),
+        actions: [
+          TextButton(
+              child: Text(AppLocalizations.of(context)!.cancel),
+              onPressed: () {
+                if (mounted) {
+                  Navigator.of(dialogContext).pop();
+                }
+              }),
+        ],
+      ),
+    );
+  }
+
+  Widget MessageWidget(
+      BuildContext context, List<GenericTodo> generalTodoList) {
     return Column(
       children: [
         Expanded(
@@ -514,7 +594,7 @@ class _MangelPageState extends State<MangelPage> with TickerProviderStateMixin {
             height: Get.height * 0.75,
             child: Column(
               children: [
-                isFilter
+                /*  isFilter
                     ? SearchableDropdown.multiple(
                         clearIcon: Icon(
                           Icons.car_crash,
@@ -633,21 +713,20 @@ class _MangelPageState extends State<MangelPage> with TickerProviderStateMixin {
                       )
                     : Container(
                         color: Colors.amber,
-                      ),
+                      ), */
+
                 Expanded(
                   child: ListView.builder(
                     controller: _scrollController,
                     physics: BouncingScrollPhysics(),
                     shrinkWrap: true,
-                    itemCount: _todosResult.genericTodo!.length ?? 0,
+                    itemCount: generalTodoList.length ?? 0,
                     itemBuilder: (ctx, i) {
-                      var msg2;
-                      if (_todosResult.genericTodo![i].labelList != null) {
+                      if (generalTodoList[i].labelList != null) {
                         for (var xx = 0;
-                            xx < _todosResult.genericTodo![i].labelList!.length;
+                            xx < generalTodoList[i].labelList!.length;
                             xx++) {
-                          var abc = _todosResult
-                              .genericTodo![i].labelList![xx].labelId;
+                          var abc = generalTodoList[i].labelList![xx].labelId;
 
                           print(abc);
                         }
@@ -667,12 +746,11 @@ print(matchingIdsFunctional); // Çıktı: [1, 2, 4]
                       var matchingLabelId;
 
                       if (selectedLabels.isNotEmpty) {
-                        for (var labelMap
-                            in _todosResult.genericTodo![i].labelList!) {
+                        for (var labelMap in generalTodoList[i].labelList!) {
                           int? labelId = labelMap.labelId;
                           if (labelId != null &&
                               selectedLabels.contains(labelId)) {
-                            matchingLabelId = _todosResult.genericTodo![
+                            matchingLabelId = generalTodoList[
                                 i]; // Eşleşme varsa A listesinin Id'sini atıyoruz
 
                             msg = matchingLabelId;
@@ -681,7 +759,7 @@ print(matchingIdsFunctional); // Çıktı: [1, 2, 4]
                           }
                         }
                       } else {
-                        msg = _todosResult.genericTodo![i];
+                        msg = generalTodoList[i];
                         return MessageListItemNew(context, msg);
                       }
                       return null;
@@ -698,9 +776,24 @@ print(matchingIdsFunctional); // Çıktı: [1, 2, 4]
     );
   }
 
+  final GlobalKey<ExpansionTileCardState> cardA = GlobalKey();
+
+  late List<bool> _checkedStates;
+  bool isChecked = false;
+  TextEditingController labelNameController = TextEditingController();
   @override
   Widget build(BuildContext context) {
+    final ButtonStyle flatButtonStyle = TextButton.styleFrom(
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.all(Radius.circular(4.0)),
+      ),
+    );
     var shortestSide = MediaQuery.of(context).size.shortestSide;
+    var generalTodo;
+    if (_todosResult.genericTodo != null) {
+      generalTodo = _todosResult.genericTodo!;
+    }
+
     bool isTablet = shortestSide > 600;
     return GetBuilder(
       builder: (ControllerTodo controller) {
@@ -710,191 +803,323 @@ print(matchingIdsFunctional); // Çıktı: [1, 2, 4]
         }
         return Scaffold(
           endDrawer: Drawer(
-            child: Container(
-              color: Colors.white,
-              child: Column(
-                children: [
-                  Container(
-                    height: 50,
-                    width: Get.width,
-                    color: Colors.white,
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: [
-                        IconButton(
-                          onPressed: () {
-                            Scaffold.of(context).closeEndDrawer();
-                          },
-                          icon: Icon(Icons.arrow_back),
-                        ),
-                        Text("Mängel"),
-                      ],
+            child: SingleChildScrollView(
+              child: Container(
+                color: Colors.white,
+                child: Column(
+                  children: [
+                    Container(
+                      height: 50,
+                      width: Get.width,
+                      color: Colors.white,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: [
+                          IconButton(
+                            onPressed: () {
+                              Scaffold.of(context).closeEndDrawer();
+                            },
+                            icon: Icon(Icons.arrow_back),
+                          ),
+                          Text("Mängel"),
+                        ],
+                      ),
                     ),
-                  ),
-                  SearchableDropdown.multiple(
-                    dialogBox: true,
-                    items: cboLabelsList,
-                    selectedItems: selectedLabelIndexes.toSet().toList(),
-                    hint: Padding(
-                      padding: const EdgeInsets.all(0.0),
-                      child: Text(AppLocalizations.of(context)!.labels),
-                    ),
-                    closeButton: (value) {
-                      setState(() {
-                        selectedLabels.clear();
-                        selectedLabelIndexes = value;
-
-                        labelsList.asMap().forEach((index, value) {
-                          selectedLabelIndexes.forEach((selectedLabelIndex) {
-                            if (selectedLabelIndex == index) {
-                              selectedLabels.add(value.id!);
-                            }
-                          });
-                        });
-                        print(labelsList);
-                      });
-                    },
-                    onChanged: (value) {
-                      setState(() {
-                        selectedLabels.clear();
-                        selectedLabelIndexes = value;
-
-                        labelsList.asMap().forEach((index, value) {
-                          selectedLabelIndexes.forEach((selectedLabelIndex) {
-                            if (selectedLabelIndex == index) {
-                              selectedLabels.add(value.id!);
-                            }
-                          });
-                        });
-                        print(labelsList);
-                      });
-                    },
-                    displayItem: (item, selected) {
-                      return (Row(children: [
-                        selected
-                            ? Icon(
-                                Icons.check,
-                                color: Colors.green,
-                              )
-                            : Icon(
-                                Icons.check_box_outline_blank,
-                                color: Colors.grey,
-                              ),
-                        SizedBox(width: 7),
-                        Expanded(
-                          child: item,
-                        ),
-                      ]));
-                    },
-                    selectedValueWidgetFn: (item) {
-                      return Container(
-                        decoration: BoxDecoration(
-                            color: Color(0xFFdedede),
-                            borderRadius: BorderRadius.circular(30)),
-                        margin: EdgeInsets.only(right: 5),
-                        padding: EdgeInsets.symmetric(horizontal: 9),
-                        child: (Row(
-                          children: [
-                            Text(item.toString().split("+").first),
-                            SizedBox(
-                              width: 5,
-                            ),
-                            Icon(
-                              Icons.lens,
-                              color: Color(int.parse(
-                                  item
-                                      .toString()
-                                      .split("+")
-                                      .last
-                                      .replaceFirst('#', "FF"),
-                                  radix: 16)),
-                            ),
-                          ],
-                        )),
-                      );
-                    },
-                    doneButton: (selectedItemsDone, doneContext) {
-                      return SizedBox.shrink();
-                    },
-
-                    style: Get.theme.inputDecorationTheme.hintStyle,
-                    searchFn: (String keyword, items) {
-                      List<int> ret = <int>[];
-                      if (items != null && keyword.isNotEmpty) {
-                        keyword.split(" ").forEach((k) {
-                          int i = 0;
-                          items.forEach((item) {
-                            if (k.isNotEmpty &&
-                                (item.value
-                                    .toString()
-                                    .toLowerCase()
-                                    .contains(k.toLowerCase()))) {
-                              ret.add(i);
-                            }
-                            i++;
-                          });
-                        });
-                      }
-                      if (keyword.isEmpty) {
-                        ret = Iterable<int>.generate(items.length).toList();
-                      }
-                      return (ret);
-                    },
-                    //clearIcon: Icons(null), todo:nullable yap
-                    icon: Icon(
-                      Icons.expand_more,
-                      size: 31,
-                    ),
-                    underline: Container(
-                      height: 0.0,
-                      decoration: BoxDecoration(
-                          border: Border(
-                              bottom:
-                                  BorderSide(color: Colors.teal, width: 0.0))),
-                    ),
-                    iconDisabledColor: const Color.fromARGB(255, 206, 11, 11),
-                    iconEnabledColor: Get.theme.colorScheme.surface,
-                    isExpanded: true,
-                  ),
-                  Container(
-                    height: Get.height * 0.8,
-                    child: SelectableListAnchor.single(
-                      backgroundColor: Colors.white,
+                    /* 
+                    SearchableDropdown.multiple(
+                      dialogBox: true,
                       items: cboLabelsList,
-                      itemTitle: (e) => e.value,
-                      elevation: 6,
-                      enableDefaultSearch: true,
-                      //   formFieldKey:
-                      //_formFieldKey,
-                      pinSelectedValue: true,
-                      onConfirm: (val) {
-                        //  _formFieldKey.currentState?.validate();
+                      selectedItems: selectedLabelIndexes.toSet().toList(),
+                      hint: Padding(
+                        padding: const EdgeInsets.all(0.0),
+                        child: Text(AppLocalizations.of(context)!.labels),
+                      ),
+                      closeButton: (value) {
+                        setState(() {
+                          selectedLabels.clear();
+                          selectedLabelIndexes = value;
+
+                          labelsList.asMap().forEach((index, value) {
+                            selectedLabelIndexes.forEach((selectedLabelIndex) {
+                              if (selectedLabelIndex == index) {
+                                selectedLabels.add(value.id!);
+                              }
+                            });
+                          });
+                          print(labelsList);
+                        });
                       },
-                      /*   validator: (value) {
-                        if (value?.isEmpty ?? true) return 'Required';
-                        return null;
-                      }, */
-                      builder: (controller, state) {
-                        return TextButton(
-                          onPressed: () async {
-                            controller.openDialog();
-                          },
-                          child: const Text('Open view'),
+                      onChanged: (value) {
+                        setState(() {
+                          selectedLabels.clear();
+                          selectedLabelIndexes = value;
+
+                          labelsList.asMap().forEach((index, value) {
+                            selectedLabelIndexes.forEach((selectedLabelIndex) {
+                              if (selectedLabelIndex == index) {
+                                selectedLabels.add(value.id!);
+                              }
+                            });
+                          });
+                          print(labelsList);
+                        });
+                      },
+                      displayItem: (item, selected) {
+                        return (Row(children: [
+                          selected
+                              ? Icon(
+                                  Icons.check,
+                                  color: Colors.green,
+                                )
+                              : Icon(
+                                  Icons.check_box_outline_blank,
+                                  color: Colors.grey,
+                                ),
+                          SizedBox(width: 7),
+                          Expanded(
+                            child: item,
+                          ),
+                        ]));
+                      },
+                      selectedValueWidgetFn: (item) {
+                        return Container(
+                          decoration: BoxDecoration(
+                              color: Color(0xFFdedede),
+                              borderRadius: BorderRadius.circular(30)),
+                          margin: EdgeInsets.only(right: 5),
+                          padding: EdgeInsets.symmetric(horizontal: 9),
+                          child: (Row(
+                            children: [
+                              Text(item.toString().split("+").first),
+                              SizedBox(
+                                width: 5,
+                              ),
+                              Icon(
+                                Icons.lens,
+                                color: Color(int.parse(
+                                    item
+                                        .toString()
+                                        .split("+")
+                                        .last
+                                        .replaceFirst('#', "FF"),
+                                    radix: 16)),
+                              ),
+                            ],
+                          )),
                         );
                       },
-                    ),
-                    /*   MultiSelectListWidget(
-                      selectAllTextStyle: const TextStyle(
-                          fontSize: 16, fontWeight: FontWeight.w600),
-                      itemTitleStyle: const TextStyle(
-                          fontSize: 14, fontWeight: FontWeight.w500),
-                      items: cboLabelsList2,
-                      onItemsSelect: (selectedItems) {
-                        print('Selected Items: ${selectedItems.length}');
+                      doneButton: (selectedItemsDone, doneContext) {
+                        return SizedBox.shrink();
                       },
-                    ), */
-                  ),
-                ],
+
+                      style: Get.theme.inputDecorationTheme.hintStyle,
+                      searchFn: (String keyword, items) {
+                        List<int> ret = <int>[];
+                        if (items != null && keyword.isNotEmpty) {
+                          keyword.split(" ").forEach((k) {
+                            int i = 0;
+                            items.forEach((item) {
+                              if (k.isNotEmpty &&
+                                  (item.value
+                                      .toString()
+                                      .toLowerCase()
+                                      .contains(k.toLowerCase()))) {
+                                ret.add(i);
+                              }
+                              i++;
+                            });
+                          });
+                        }
+                        if (keyword.isEmpty) {
+                          ret = Iterable<int>.generate(items.length).toList();
+                        }
+                        return (ret);
+                      },
+                      //clearIcon: Icons(null), todo:nullable yap
+                      icon: Icon(
+                        Icons.expand_more,
+                        size: 31,
+                      ),
+                      underline: Container(
+                        height: 0.0,
+                        decoration: BoxDecoration(
+                            border: Border(
+                                bottom: BorderSide(
+                                    color: Colors.teal, width: 0.0))),
+                      ),
+                      iconDisabledColor: const Color.fromARGB(255, 206, 11, 11),
+                      iconEnabledColor: Get.theme.colorScheme.surface,
+                      isExpanded: true,
+                    ),
+                     */
+
+                    ExpansionTileCard(
+                      baseColor: Colors.white,
+                      expandedColor: Colors.white,
+                      key: cardA,
+                      //  leading: const CircleAvatar(child: Text('A')),
+                      title: const Text('Add Label'),
+                      children: <Widget>[
+                        const Divider(
+                          thickness: 1.0,
+                          height: 1.0,
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: TextField(
+                            readOnly: false,
+                            textAlign: TextAlign.center,
+                            controller: labelNameController,
+                            style: TextStyle(
+                              color: Colors.black,
+                              fontSize: 9,
+                              //   fontWeight: FontWeight.w100,
+                            ),
+                            decoration: InputDecoration(
+                              contentPadding:
+                                  EdgeInsets.symmetric(vertical: 15),
+                              focusedBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.all(
+                                  Radius.circular(13),
+                                ),
+                                borderSide: BorderSide(
+                                  width: 1,
+                                  color: Color.fromARGB(255, 190, 195, 193),
+                                ),
+                              ),
+
+                              enabledBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.all(
+                                  Radius.circular(13),
+                                ),
+                                borderSide: BorderSide(
+                                  width: 1,
+                                  color: Color.fromARGB(255, 190, 195, 193),
+                                ),
+                              ),
+                              //    suffixText: "vhjvjvhv",
+
+                              //   disabledBorder: InputBorder.none,
+                              labelText: "Label Name",
+                              labelStyle: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 12,
+                                  color: Color.fromARGB(255, 32, 30, 30)),
+                            ),
+                          ),
+                        ),
+                        TextButton(
+                          onPressed: _showColorPicker,
+                          child: Text("Color"),
+                        ),
+                        TextButton(
+                          onPressed: _showColorPicker,
+                          child: Text(AppLocalizations.of(context)!.add),
+                        ),
+                      ],
+                    ),
+                    ListView.builder(
+                        controller: _scrollController,
+                        physics: BouncingScrollPhysics(),
+                        shrinkWrap: true,
+                        itemCount: cboLabelsList.length,
+                        itemBuilder: (ctx, i) {
+                          return Container(
+                            decoration: BoxDecoration(
+                                color: Colors.white,
+                                borderRadius: BorderRadius.circular(30)),
+                            margin: EdgeInsets.only(right: 5),
+                            padding: EdgeInsets.symmetric(horizontal: 9),
+                            child: InkWell(
+                              onTap: () {
+                                setState(() {
+                                  _checkedStates[i] = !_checkedStates[i];
+                                });
+                              },
+                              child: Row(
+                                children: [
+                                  Checkbox(
+                                    activeColor: primaryYellowColor,
+                                    checkColor: Colors.white,
+                                    value: _checkedStates[i],
+                                    onChanged: (bool? value) {
+                                      setState(() {
+                                        _checkedStates[i] = value!;
+                                        /*  selectedLabelIndexes.add(i);
+                                        selectedLabels.add(
+                                            cboLabelsList[i].value.toString());
+                                        print(selectedLabelIndexes);
+                                        print(selectedLabels); */
+                                      });
+                                    },
+                                  ),
+                                  Text(cboLabelsList[i]
+                                      .value
+                                      .toString()
+                                      .split("+")
+                                      .first),
+                                  SizedBox(
+                                    width: 10,
+                                  ),
+                                  Icon(
+                                    Icons.lens,
+                                    color: Color(int.parse(
+                                        cboLabelsList[i]
+                                            .value
+                                            .toString()
+                                            .split("+")
+                                            .last
+                                            .replaceFirst('#', "FF"),
+                                        radix: 16)),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          );
+                        }),
+
+                    /* 
+                    Container(
+                      height: Get.height * 0.8,
+                      child: SelectableListAnchor.single(
+                        backgroundColor: Colors.white,
+                        items: cboLabelsList,
+                        itemTitle: (e) => e.value,
+                        elevation: 6,
+                        enableDefaultSearch: true,
+                        //   formFieldKey:
+                        //_formFieldKey,
+                        pinSelectedValue: true,
+                        onConfirm: (val) {
+                          //  _formFieldKey.currentState?.validate();
+                        },
+                        /*   validator: (value) {
+                          if (value?.isEmpty ?? true) return 'Required';
+                          return null;
+                        }, */
+                        builder: (controller, state) {
+                          return TextButton(
+                            onPressed: () async {
+                              controller.openDialog();
+                            },
+                            child: const Text('Open view'),
+                          );
+                        },
+                      ),
+                      /*   MultiSelectListWidget(
+                        selectAllTextStyle: const TextStyle(
+                            fontSize: 16, fontWeight: FontWeight.w600),
+                        itemTitleStyle: const TextStyle(
+                            fontSize: 14, fontWeight: FontWeight.w500),
+                        items: cboLabelsList2,
+                        onItemsSelect: (selectedItems) {
+                          print('Selected Items: ${selectedItems.length}');
+                        },
+                      ), */
+                    ),
+                */
+                  ],
+                ),
               ),
             ),
           ),
@@ -916,6 +1141,29 @@ print(matchingIdsFunctional); // Çıktı: [1, 2, 4]
                     },
                   );
                 },
+              ),
+              IconButton(
+                onPressed: () {
+                  if (isRemind) {
+                    setState(() {
+                      remindDateList = null;
+                      isRemind = false;
+                    });
+                  } else {
+                    setState(() {
+                      remindDateList = generalTodo
+                          .where((element) => element.remindDate != null)
+                          .toList();
+                      isRemind = true;
+                    });
+                  }
+
+                  print(remindDateList);
+                },
+                icon: Icon(
+                  Icons.notification_important_outlined,
+                  color: isRemind ? Colors.amber : Colors.black,
+                ),
               ),
               IconButton(
                 onPressed: () {
@@ -965,7 +1213,11 @@ print(matchingIdsFunctional); // Çıktı: [1, 2, 4]
                                 decoration: BoxDecoration(
                                   color: HexColor('#f4f5f7'),
                                 ),
-                                child: MessageWidget(context),
+                                child: MessageWidget(
+                                    context,
+                                    remindDateList == null
+                                        ? generalTodo
+                                        : remindDateList),
                               ),
                             ),
                           ),

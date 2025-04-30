@@ -133,6 +133,7 @@ dependencies:
   flutter_html: ^3.0.0
   selectable_search_list: ^0.0.2
   flutter_selectable_list: ^0.0.10
+  expansion_tile_card: ^3.0.0
 
  
 

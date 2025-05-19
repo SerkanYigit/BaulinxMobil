@@ -41,6 +41,7 @@ import 'package:undede/Pages/Message/imagePage.dart';
 import 'package:undede/Services/BlockReport/BlockReportDB.dart';
 import 'package:undede/Services/Chat/ChatDB.dart';
 import 'package:undede/Services/Common/CommonDB.dart';
+import 'package:undede/Services/ServiceUrl.dart';
 import 'package:undede/WidgetsV2/customCardShadow.dart';
 import 'package:undede/model/Chat/ChatFileInsert.dart';
 import 'package:undede/model/Chat/ChatMessageSaveResult.dart';
@@ -166,6 +167,7 @@ class _ChatDetailPageState extends State<ChatDetailPage>
   FlutterSoundRecorder _mRecorder = FlutterSoundRecorder();
   bool _mRecorderIsInited = false;
   String _mPath = 'flutter_sound_example.aac';
+  String mesajUrl = "";
   /* ONLINE USER */
   // open progess
   bool _isOpenPross = false;
@@ -182,7 +184,11 @@ class _ChatDetailPageState extends State<ChatDetailPage>
     await Permission.camera.request();
     await Permission.microphone.request();
     print(loading);
-    await CareateOrJoinMetting(targetUserIdList);
+    await CareateOrJoinMetting2(_controllerDB.headers(),
+        OwnerId: _controllerDB.user.value!.result!.id!,
+        UserId: _controllerDB.user.value!.result!.id!,
+        TargetUserIdList: targetUserIdList,
+        ModuleType: 20);
     setState(() {
       _pc.open();
       _panelMinSize = 170.0;
@@ -375,6 +381,7 @@ class _ChatDetailPageState extends State<ChatDetailPage>
     });
   }
 
+/* 
   Future<void> CareateOrJoinMetting(List<int> TargetUserIdList) async {
     await _commonDB.CareateOrJoinMetting(_controllerDB.headers(),
             OwnerId: _controllerDB.user.value!.result!.id!,
@@ -384,9 +391,37 @@ class _ChatDetailPageState extends State<ChatDetailPage>
         .then((value) {
       setState(() {
         _careateOrJoinMettingResult = value;
+        mesajUrl = _careateOrJoinMettingResult.result!.meetingUrl!;
+        print("MESAJ URL 2" + mesajUrl.toString());
+        debugPrint("Debugprin MESAJ URL 2" + mesajUrl);
+        print("MESAJ URL 2" + value.result!.meetingUrl!);
         loading = false;
       });
     });
+  }
+ */
+  final ServiceUrl _serviceUrl = ServiceUrl();
+  Future<CareateOrJoinMettingResult> CareateOrJoinMetting2(
+      Map<String, String> header,
+      {int? OwnerId,
+      int? UserId,
+      List<int>? TargetUserIdList,
+      int? ModuleType}) async {
+    var body = jsonEncode({
+      "OwnerId": OwnerId,
+      "UserId": UserId,
+      "TargetUserIdList": TargetUserIdList,
+      "ModuleType": ModuleType
+    });
+    var response = await http.post(Uri.parse(_serviceUrl.careateOrJoinMetting),
+        headers: header, body: body);
+    print(response.body);
+    if (response.body.isEmpty) {
+      return CareateOrJoinMettingResult(hasError: true);
+    } else {
+      final responseData = jsonDecode(response.body) as Map<String, dynamic>;
+      return CareateOrJoinMettingResult.fromJson(responseData);
+    }
   }
 
   EndMeeting(String MeetingId) async {
@@ -400,6 +435,7 @@ class _ChatDetailPageState extends State<ChatDetailPage>
         _controllerDB.headers(), _controllerDB.user.value!.result!.id!);
   }
 
+  bool isTargetPageLoaded = false;
   @override
   Widget build(BuildContext context) {
     Uri uri = Uri.parse(widget.meetingUrl);
@@ -440,40 +476,99 @@ class _ChatDetailPageState extends State<ChatDetailPage>
                           child: Stack(
                             children: [
                               InAppWebView(
-                                  androidOnPermissionRequest:
-                                      (InAppWebViewController controller,
-                                          String origin,
-                                          List<String> resources) async {
-                                    return PermissionRequestResponse(
-                                        resources: resources,
-                                        action: PermissionRequestResponseAction
-                                            .GRANT);
+                                  onLoadStop: (controller, url) {
+                                    if (url
+                                        .toString()
+                                        .contains("target-page")) {
+                                      setState(() {
+                                        isTargetPageLoaded = true;
+                                        print("Target page loaded" +
+                                            isTargetPageLoaded.toString());
+                                      });
+                                    }
                                   },
-                                  initialOptions: InAppWebViewGroupOptions(
-                                    crossPlatform: InAppWebViewOptions(
-                                      useShouldOverrideUrlLoading: true,
-                                      mediaPlaybackRequiresUserGesture: false,
-                                      userAgent:
-                                          "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/98.0.4758.102 Safari/537.36 OPR/84.0.4316.21",
-                                    ),
-                                    android: AndroidInAppWebViewOptions(
-                                      useHybridComposition: true,
-                                    ),
-                                    ios: IOSInAppWebViewOptions(
-                                      allowsInlineMediaPlayback: true,
-                                    ),
+                                  onReceivedError: (controller, url, message) {
+                                    print("mesaj: $message");
+                                  },
+                                  onConsoleMessage:
+                                      (controller, consoleMessage) {
+                                    print(
+                                        "Console message: ${consoleMessage.message}");
+                                  },
+                                  onPermissionRequest:
+                                      (controller, permissionRequest) async {
+                                    return PermissionResponse(
+                                        resources: permissionRequest.resources,
+                                        action: PermissionResponseAction.GRANT);
+                                  },
+                                  initialSettings: InAppWebViewSettings(
+                                    domStorageEnabled: true,
+                                    cacheEnabled: true,
+                                    isInspectable: true,
+                                    allowBackgroundAudioPlaying: true,
+                                    javaScriptEnabled: true,
+                                    useShouldOverrideUrlLoading: false,
+                                    mediaPlaybackRequiresUserGesture: false,
+                                    //  userAgent:
+                                    //    "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/98.0.4758.102 Safari/537.36 OPR/84.0.4316.21",
+                                    userAgent:
+                                        "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/98.0.4758.102 Safari/537.36",
+                                    useHybridComposition: true,
+                                    supportZoom: true,
+                                    allowsInlineMediaPlayback: true,
                                   ),
                                   initialUrlRequest: URLRequest(
                                     //!Uri.parse yyerine WebUri kullanildi
 
                                     url: WebUri(widget.directLink
                                         ? widget.meetingUrl
-                                        : _careateOrJoinMettingResult
-                                            .result!.meetingUrl!),
+                                        // : "https://bbb.baulinx.com/bigbluebutton/api/join?meetingID=9316bf49e4cd46f6886737d47fb1b7c0&fullName=Ozgor+Mayir&password=NpkunQNR6Uamk4dD&joinViaHtml5=true&checksum=65441f81b22d7228621be3bc7a3e94ad01645a64",
+                                        // ),
+
+                                        : mesajUrl),
                                   )),
+
+                              /* 
+                                              
+                            InAppWebView(
+                                androidOnPermissionRequest:
+                                    (InAppWebViewController controller,
+                                        String origin,
+                                        List<String> resources) async {
+                                  return PermissionRequestResponse(
+                                      resources: resources,
+                                      action: PermissionRequestResponseAction
+                                          .GRANT);
+                                },
+                                initialOptions: InAppWebViewGroupOptions(
+                                  crossPlatform: InAppWebViewOptions(
+                                    useShouldOverrideUrlLoading: true,
+                                    mediaPlaybackRequiresUserGesture: false,
+                                    userAgent:
+                                        "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/98.0.4758.102 Safari/537.36 OPR/84.0.4316.21",
+                                  ),
+                                  android: AndroidInAppWebViewOptions(
+                                    useHybridComposition: true,
+                                  ),
+                                  ios: IOSInAppWebViewOptions(
+                                    allowsInlineMediaPlayback: true,
+                                  ),
+                                ),
+                                initialUrlRequest: URLRequest(
+                                  //!Uri.parse yyerine WebUri kullanildi
+                                              
+                                  url: WebUri(widget.directLink
+                                      ? widget.meetingUrl
+                                      : _careateOrJoinMettingResult
+                                          .result!.meetingUrl!),
+                                )),
+                                              
+                                              
+                                               */
+
                               Positioned(
-                                right: 10,
-                                bottom: 9,
+                                right: Get.width / 8, //411
+                                top: Get.height / 85, //890
                                 child: GestureDetector(
                                   onTap: () async {
                                     EndMeeting(widget.directLink
@@ -487,13 +582,15 @@ class _ChatDetailPageState extends State<ChatDetailPage>
                                     loading = true;
                                   },
                                   child: Container(
-                                    height: 50,
-                                    width: 60,
+                                    height: 30,
+                                    width: 55,
                                     decoration: BoxDecoration(
-                                        shape: BoxShape.circle,
+                                        borderRadius: BorderRadius.all(
+                                            Radius.circular(30)),
+                                        shape: BoxShape.rectangle,
                                         color: Colors.red),
                                     child: Icon(
-                                      Icons.call_end,
+                                      Icons.logout,
                                       color: Colors.white,
                                     ),
                                   ),
@@ -1212,6 +1309,13 @@ class _ChatDetailPageState extends State<ChatDetailPage>
     );
   }
 
+  void printLongString(String text) {
+    final RegExp pattern = RegExp('.{1,800}'); // 800 is the size of each chunk
+    pattern
+        .allMatches(text)
+        .forEach((RegExpMatch match) => print(match.group(0)));
+  }
+
   Widget iconCreation(IconData icons, Color color, String text) {
     return Column(
       children: [
@@ -1370,7 +1474,22 @@ class _ChatDetailPageState extends State<ChatDetailPage>
                           _panelMinSize = 170.0;
                           targetUserIdList.add(widget.Id);
                         });
-                        await CareateOrJoinMetting(targetUserIdList);
+                        // await CareateOrJoinMetting(targetUserIdList);
+                        await CareateOrJoinMetting2(_controllerDB.headers(),
+                                OwnerId: _controllerDB.user.value!.result!.id!,
+                                UserId: _controllerDB.user.value!.result!.id!,
+                                TargetUserIdList: targetUserIdList,
+                                ModuleType: 20)
+                            .then((value) {
+                          setState(() {
+                            _careateOrJoinMettingResult = value;
+                            loading = false;
+                            mesajUrl =
+                                _careateOrJoinMettingResult.result!.meetingUrl!;
+                            print("MESAJ URL 3" + mesajUrl.toString());
+                            printLongString(mesajUrl);
+                          });
+                        });
 /*
                         showModalBottomSheet(
                             transitionAnimationController: controller,

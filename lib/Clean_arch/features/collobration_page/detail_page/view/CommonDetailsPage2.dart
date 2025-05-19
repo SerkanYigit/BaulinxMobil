@@ -4,7 +4,11 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
+import 'package:selectable_search_list/selectable_search_list.dart';
+import 'package:undede/Clean_arch/DirectoryDetail.dart';
+import 'package:undede/Clean_arch/core/constants/constants.dart';
 import 'package:undede/Clean_arch/features/collobration_page/detail_page/view/common_detail_page.dart';
+import 'package:undede/Clean_arch/features/collobration_page/detail_page/view/directory_detail_page.dart';
 import 'package:undede/Clean_arch/features/detail_page/DirectoryDetailNeu2.dart';
 import 'package:undede/Controller/ControllerCommon.dart';
 import 'package:undede/Controller/ControllerDB.dart';
@@ -19,6 +23,7 @@ import 'package:undede/Pages/Collaboration/TodoComments/TodoComments.dart';
 import 'package:undede/Pages/Contact/CommonDetailEditPage.dart';
 import 'package:undede/Pages/Contact/NotePageTabPage.dart';
 import 'package:undede/Pages/Note/NotePage.dart';
+import 'package:undede/Pages/Private/DirectoryDetail.dart';
 //import 'package:undede/Pages/Private/DirectoryDetail.dart';
 import 'package:undede/WidgetsV2/CustomAppBar.dart';
 import 'package:undede/WidgetsV2/headerWidget.dart';
@@ -27,7 +32,7 @@ import 'package:undede/model/Files/FilesForDirectory.dart';
 import 'package:undede/model/Todo/CommonTodo.dart';
 import 'package:undede/widgets/MyCircularProgress.dart';
 
-import '../../Custom/CustomLoadingCircle.dart';
+import '../../../../../Custom/CustomLoadingCircle.dart';
 import 'dart:io';
 import 'dart:isolate';
 import 'dart:ui';
@@ -124,6 +129,15 @@ class _CommonDetailsPageState extends State<CommonDetailsPage>
   int currentTab = 0;
   ControllerTodo _controllerTodo = Get.put(ControllerTodo());
   bool isLoading = true;
+  final ScrollController _scrollController = ScrollController();
+  bool isFilter = false;
+  ControllerLabel _controllerLabel = Get.put(ControllerLabel());
+
+  final List<DropdownMenuItem> cboLabelsList = [];
+  List<UserLabel> labelsList = <UserLabel>[];
+  List<int> selectedLabelIndexes = [];
+  List<int> selectedLabels = [];
+  late List<bool> _checkedStates;
 
   @override
   void initState() {
@@ -142,6 +156,39 @@ class _CommonDetailsPageState extends State<CommonDetailsPage>
 
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       await GetTodoComments();
+      await getLabelByUserId();
+      /*  
+      await _controllerLabel.GetLabelByUserId(
+        _controllerDB.headers(),
+        Id: 0,
+        UserId: _controllerDB.user.value!.result!.id!,
+        CustomerId: 0,
+      ).then((value) {
+        labelsList = value.result!;
+        List.generate(_controllerLabel.getLabel.value!.result!.length, (index) {
+          cboLabelsList.add(DropdownMenuItem(
+              child: Row(
+                children: [
+                  Text(_controllerLabel.getLabel.value!.result![index].title!),
+                  Icon(
+                    Icons.lens,
+                    color: Color(int.parse(
+                        _controllerLabel.getLabel.value!.result![index].color!
+                            .replaceFirst('#', "FF"),
+                        radix: 16)),
+                  )
+                ],
+              ),
+              key: Key(_controllerLabel.getLabel.value!.result![index].title!
+                  .toString()),
+              value: _controllerLabel.getLabel.value!.result![index].title! +
+                  "+" +
+                  _controllerLabel.getLabel.value!.result![index].color!));
+        });
+
+        _checkedStates = List.generate(cboLabelsList.length, (index) => false);
+      });
+ */
       setState(() {
         _tabController!.animateTo(widget.selectedTab);
         currentTab = widget.selectedTab;
@@ -169,6 +216,74 @@ class _CommonDetailsPageState extends State<CommonDetailsPage>
         });
   }
 
+  getLabelByUserId() async {
+    /* setState(() {
+      loading = true;
+    }); */
+    await _controllerLabel.GetLabelByUserId(_controllerDB.headers(),
+            Id: 0, UserId: _controllerDB.user.value!.result!.id, CustomerId: 0)
+        .then((value) {
+      labelsList = value.result!;
+      List.generate(_controllerLabel.getLabel.value!.result!.length, (index) {
+        cboLabelsList.add(DropdownMenuItem(
+            child: Row(
+              children: [
+                Text(_controllerLabel.getLabel.value!.result![index].title!),
+                Icon(
+                  Icons.lens,
+                  color: Color(int.parse(
+                      _controllerLabel.getLabel.value!.result![index].color!
+                          .replaceFirst('#', "FF"),
+                      radix: 16)),
+                )
+              ],
+            ),
+            key: Key(
+                _controllerLabel.getLabel.value!.result![index].id.toString()),
+            value: _controllerLabel.getLabel.value!.result![index].title! +
+                "+" +
+                _controllerLabel.getLabel.value!.result![index].color!));
+      });
+    });
+
+    await _controllerLabel.GetTodoLabelList(
+      _controllerDB.headers(),
+      TodoId: widget.todoId,
+      UserId: _controllerDB.user.value!.result!.id,
+    ).then((value) {
+      setState(() {
+        selectedLabelIndexes.clear();
+        selectedLabels.clear();
+        value.result!.forEach((label) {
+          cboLabelsList.asMap().forEach((index, availableLabel) {
+            String cleanedKey = availableLabel.key
+                .toString()
+                .replaceAll(RegExp(r"[<'\>\[\]]"), '');
+            int keyInt = int.tryParse(cleanedKey) ?? -1;
+            int labelIdInt = label.labelId!;
+            if (keyInt == labelIdInt) {
+              if (!selectedLabelIndexes.contains(index)) {
+                selectedLabelIndexes.add(index);
+                print('Selected Indexes: $selectedLabelIndexes');
+              }
+            }
+          });
+        });
+      });
+    });
+    _checkedStates = List.generate(cboLabelsList.length, (index) {
+      if (selectedLabelIndexes.contains(index)) {
+        return true;
+      } else {
+        return false;
+      }
+    });
+
+    /*   setState(() {
+      loading = false;
+    }); */
+  }
+
   /*  deleteTodoAppointment(int Id) async {
     await _controllerCalendar.DeleteTodoAppointment(_controllerDB.headers(), Id)
         .then((value) => {
@@ -191,8 +306,135 @@ class _CommonDetailsPageState extends State<CommonDetailsPage>
     return GetBuilder<ControllerCommon>(builder: (c) {
       return GetBuilder<ControllerTodo>(builder: (c) {
         return Scaffold(
+            endDrawer: Drawer(
+              child: SingleChildScrollView(
+                child: Container(
+                  color: Colors.white,
+                  child: Column(
+                    children: [
+                      Container(
+                        height: 50,
+                        width: Get.width,
+                        color: Colors.white,
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: [
+                            IconButton(
+                              onPressed: () {
+                                Scaffold.of(context).closeEndDrawer();
+                              },
+                              icon: Icon(Icons.arrow_back),
+                            ),
+                            Text(""),
+                          ],
+                        ),
+                      ),
+                      GestureDetector(
+                        onTap: () {
+                          setState(() {
+                            Navigator.pop(context); // Drawer'ı kapatır.
+                          });
+                        },
+                        child: Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Container(
+                            padding: EdgeInsets.all(8),
+                            height: 40,
+                            color: Colors.lightGreen,
+                            child: Row(
+                              children: [
+                                Icon(Icons.filter_alt_outlined),
+                                Text("Save"),
+                              ],
+                            ),
+                          ),
+                        ),
+                      ),
+                      ListView.builder(
+                          controller: _scrollController,
+                          physics: BouncingScrollPhysics(),
+                          shrinkWrap: true,
+                          itemCount: cboLabelsList.length,
+                          itemBuilder: (ctx, i) {
+                            return Container(
+                              decoration: BoxDecoration(
+                                  color: Colors.white,
+                                  borderRadius: BorderRadius.circular(30)),
+                              margin: EdgeInsets.only(right: 5),
+                              padding: EdgeInsets.symmetric(horizontal: 9),
+                              child: InkWell(
+                                onTap: () {
+                                  setState(() {
+                                    _checkedStates[i] = !_checkedStates[i];
+                                  });
+                                },
+                                child: Row(
+                                  children: [
+                                    Checkbox(
+                                      activeColor: primaryYellowColor,
+                                      checkColor: Colors.white,
+                                      value: _checkedStates[i],
+                                      onChanged: (bool? value) {
+                                        setState(() {
+                                          _checkedStates[i] = value!;
+                                          selectedLabelIndexes.add(i);
+                                          selectedLabels.add(int.parse(
+                                              cboLabelsList[i].value));
+                                          print(selectedLabelIndexes);
+                                          print(selectedLabels);
+                                        });
+                                      },
+                                    ),
+                                    Text(cboLabelsList[i]
+                                        .value
+                                        .toString()
+                                        .split("+")
+                                        .first),
+                                    SizedBox(
+                                      width: 10,
+                                    ),
+                                    Icon(
+                                      Icons.lens,
+                                      color: Color(int.parse(
+                                          cboLabelsList[i]
+                                              .value
+                                              .toString()
+                                              .split("+")
+                                              .last
+                                              .replaceFirst('#', "FF"),
+                                          radix: 16)),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            );
+                          }),
+                    ],
+                  ),
+                ),
+              ),
+            ),
             appBar: AppBar(
+              title: Text(widget.commonBoardTitle),
               backgroundColor: Colors.white,
+              actions: [
+                Builder(
+                  builder: (BuildContext context) {
+                    return IconButton(
+                      icon: Icon(Icons.search_off_outlined),
+                      onPressed: () {
+                        Scaffold.of(context).openEndDrawer();
+                        setState(() {
+                          isFilter = true;
+                        });
+                      },
+                    );
+                  },
+                ),
+                isTablet
+                    ? _tabMenuForTablet(context)
+                    : _tabMenuForPhone(context),
+              ],
             ),
             backgroundColor: Colors.white,
             // Get.theme.scaffoldBackgroundColor,
@@ -294,9 +536,9 @@ class _CommonDetailsPageState extends State<CommonDetailsPage>
                                                 ],
                                               ),
                                             ), */
-                                            isTablet
+                                            /*        isTablet
                                                 ? _tabMenuForTablet(context)
-                                                : _tabMenuForPhone(context),
+                                                : _tabMenuForPhone(context), */
                                             /*   SizedBox(
                                               height: 15,
                                             ), */
@@ -328,7 +570,7 @@ class _CommonDetailsPageState extends State<CommonDetailsPage>
                                                                     //         ],
                                                                     //       )
                                                                     //     :
-                                                                    DirectoryDetailNeu2(
+                                                                    DirectoryDetailOldest(
                                                                   folderName:
                                                                       "",
                                                                   hideHeader:
@@ -351,8 +593,11 @@ class _CommonDetailsPageState extends State<CommonDetailsPage>
                                                         isPrivate:
                                                             widget.isPrivate,
                                                         toggleSheetClose: () {
-                                                          widget
-                                                              .toggleSheetClose!();
+                                                          widget.toggleSheetClose!() ==
+                                                                  null
+                                                              ? null
+                                                              : widget
+                                                                  .toggleSheetClose!();
                                                         },
                                                       ),
                                                     ]
@@ -637,7 +882,7 @@ class _CommonDetailsPageState extends State<CommonDetailsPage>
 
   Container _tabMenuForPhone(BuildContext context) {
     return Container(
-      height: Get.height / 15,
+      height: Get.height / 25,
       padding: EdgeInsets.symmetric(
         horizontal: 10,
       ),
@@ -710,7 +955,10 @@ class _CommonDetailsPageState extends State<CommonDetailsPage>
           width: Get.height / 17,
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(10),
-            color: currentTab == index ? Colors.grey[500] : Colors.white,
+            color: currentTab == index
+                ? primaryYellowColor
+                // Colors.grey[500]
+                : Colors.white,
             boxShadow: standartCardShadow(),
           ),
           padding: EdgeInsets.symmetric(horizontal: 11, vertical: 7),

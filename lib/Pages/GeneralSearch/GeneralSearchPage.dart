@@ -9,6 +9,7 @@ import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
+import 'package:undede/Clean_arch/core/constants/constants.dart';
 import 'package:undede/Controller/ControllerDB.dart';
 import 'package:undede/Controller/ControllerFiles.dart';
 import 'package:undede/Controller/ControllerGeneralSearch.dart';
@@ -982,8 +983,8 @@ class _GeneralSearchPageState extends State<GeneralSearchPage>
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(
                                 10.0), // Ensure this matches the ClipRRect radius
-                            color: Get.theme
-                                .primaryColor, // Matching the background color
+                            color:
+                                primaryYellowColor, // Matching the background color
                           ),
                           child: Padding(
                             padding: const EdgeInsets.all(
@@ -1189,7 +1190,8 @@ class _GeneralSearchPageState extends State<GeneralSearchPage>
                                 height: 35,
                                 decoration: BoxDecoration(
                                   color: _searchController.isListView
-                                      ? Get.theme.colorScheme.surface
+                                      ? primaryYellowColor
+                                      //Get.theme.colorScheme.surface
                                       : Colors.white,
                                   boxShadow: standartCardShadow(),
                                   borderRadius: BorderRadius.circular(10),
@@ -1217,7 +1219,8 @@ class _GeneralSearchPageState extends State<GeneralSearchPage>
                                 height: 35,
                                 decoration: BoxDecoration(
                                   color: !_searchController.isListView
-                                      ? Get.theme.colorScheme.surface
+                                      ? primaryYellowColor
+                                      //Get.theme.colorScheme.surface
                                       : Colors.white,
                                   boxShadow: standartCardShadow(),
                                   borderRadius: BorderRadius.circular(10),

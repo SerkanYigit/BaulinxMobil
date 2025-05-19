@@ -87,15 +87,15 @@ class DashCard extends StatelessWidget {
     DateTime tarih = DateTime.parse(inputTarih);
 
     // Formatlama
-    return DateFormat('dd-MM-yyyy').format(tarih);
+    return DateFormat('dd.MM.yyyy').format(tarih);
   }
 
   @override
   Widget build(BuildContext context) {
     valueNotifier = ValueNotifier(progressValue ?? 35);
     return SizedBox(
-      width: 380,
-      // height: 00,
+      // width: 380,
+      height: 170,
       child: Card(
         elevation: 30,
         color: backgroundColor,
@@ -146,6 +146,38 @@ class DashCard extends StatelessWidget {
                   ),
                 ],
               ),
+              Padding(
+                padding: const EdgeInsets.only(bottom: 14.0),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Icon(Icons.timer_outlined),
+                    Text(
+                      //   (AppLocalizations.of(context)!.startDate) +
+                      " : " +
+                          (commonGroupSelected.groupStartDate != null
+                              ?
+                              //DateFormat("yyyy-MM-ddThh:mm")
+                              formatTarih(commonGroupSelected.groupStartDate!)
+                              : "Start"),
+                      style: TextStyle(color: primaryBlackColor),
+                    ),
+                    SizedBox(width: 20),
+                    Icon(Icons.timer_off_outlined),
+                    Text(
+                      //  (
+                      //   AppLocalizations.of(context)!.endDate) +
+                      " : " +
+                          (commonGroupSelected.groupEndDate != null
+                              ? formatTarih(commonGroupSelected.groupEndDate!)
+                              : "End"),
+                      style: TextStyle(color: primaryBlackColor),
+                    ),
+                  ],
+                ),
+              ),
+
+/*
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
@@ -162,6 +194,7 @@ class DashCard extends StatelessWidget {
                   ),
                 ],
               ),
+              
               Padding(
                 padding: const EdgeInsets.only(bottom: 14.0),
                 child: Row(
@@ -180,6 +213,8 @@ class DashCard extends StatelessWidget {
                   ],
                 ),
               ),
+             */
+
               Expanded(
                 child: Container(
                   width: 300,

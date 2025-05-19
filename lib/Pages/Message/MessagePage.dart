@@ -575,6 +575,7 @@ class _MessagePageState extends State<MessagePage>
                               decoration: BoxDecoration(
                                 color: HexColor('#f4f5f7'),
                               ),
+
                               child: MessageWidget(context),
                               // TabBarView(
                               //     controller: _tabController,
@@ -855,10 +856,13 @@ class _MessagePageState extends State<MessagePage>
                       children: [
                         Row(
                           children: [
-                            Text(
-                              msg.from!.name ?? "",
-                              style: TextStyle(
-                                  fontWeight: FontWeight.w600, fontSize: 16),
+                            Expanded(
+                              child: Text(
+                                overflow: TextOverflow.ellipsis,
+                                msg.from!.name ?? "",
+                                style: TextStyle(
+                                    fontWeight: FontWeight.w600, fontSize: 16),
+                              ),
                             ),
                             Spacer(),
                             Text(DateFormat.yMMMd()

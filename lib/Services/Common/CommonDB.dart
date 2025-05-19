@@ -176,7 +176,6 @@ class CommonDB implements CommonBase {
       return CareateOrJoinMettingResult(hasError: true);
     } else {
       final responseData = jsonDecode(response.body) as Map<String, dynamic>;
-
       return CareateOrJoinMettingResult.fromJson(responseData);
     }
   }

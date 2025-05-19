@@ -121,19 +121,19 @@ class ControllerTodo extends GetxController implements TodoBase {
       String? BackgroundImage}) async {
     return await _todoDB.UpdateCommonTodos(
       header,
-      UserId: UserId!,
-      CommonBoardId: CommonBoardId!,
-      TodoName: TodoName!,
-      Description: Description!,
-      TodoId: TodoId!,
-      Status: Status!,
-      StartDate: StartDate!,
-      EndDate: EndDate!,
-      RemindDate: RemindDate!,
-      ModuleType: ModuleType!,
-      DeleteBackgroundImage: DeleteBackgroundImage!,
-      BackgroundImageBase64: BackgroundImageBase64!,
-      BackgroundImage: BackgroundImage!,
+      UserId: UserId,
+      CommonBoardId: CommonBoardId,
+      TodoName: TodoName,
+      Description: Description,
+      TodoId: TodoId,
+      Status: Status,
+      StartDate: StartDate,
+      EndDate: EndDate,
+      RemindDate: RemindDate,
+      ModuleType: ModuleType,
+      DeleteBackgroundImage: DeleteBackgroundImage,
+      BackgroundImageBase64: BackgroundImageBase64,
+      BackgroundImage: BackgroundImage,
     );
   }
 

@@ -134,6 +134,7 @@ dependencies:
   selectable_search_list: ^0.0.2
   flutter_selectable_list: ^0.0.10
   expansion_tile_card: ^3.0.0
+  expandable_tile: ^1.0.4
 
  
 
@@ -145,8 +146,9 @@ flutter_launcher_icons:
   android: "launcher_icon"
   ios: true
   remove_alpha_ios: true
-  image_path: "assets/images/app_logo/logonew.png"
+  image_path: "assets/images/app_logo/logobeyaz.png"
   min_sdk_android: 21
+  
 #flutter_icons:
  # android: true
   #ios: true

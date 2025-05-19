@@ -1,4 +1,5 @@
-import 'dart:convert';
+/* import 'dart:convert';
+
 import 'dart:io';
 import 'dart:isolate';
 import 'dart:io';
@@ -855,7 +856,7 @@ class DirectoryDetailNeu2 extends StatefulWidget {
   _DirectoryDetailState createState() => _DirectoryDetailState();
 }
 
-class _DirectoryDetailState extends State<DirectoryDetailNeu2> {
+class _DirectoryDetailState extends State<DirectoryDetailNeu2> with TickerProviderStateMixin {
   final GlobalKey<RefreshIndicatorState> _refreshIndicatorKey =
       new GlobalKey<RefreshIndicatorState>();
 
@@ -864,8 +865,8 @@ class _DirectoryDetailState extends State<DirectoryDetailNeu2> {
   ControllerFiles _controllerFiles = Get.put(ControllerFiles());
   ControllerDB _controllerDB = Get.put(ControllerDB());
   ControllerLabel _controllerLabel = ControllerLabel();
-  //List<bool> openMenuAnimateValuesFolder = [];
-  //List<bool> openMenuAnimateValuesFile = [];
+  List<bool> openMenuAnimateValuesFolder = [];
+  List<bool> openMenuAnimateValuesFile = [];
   List<bool> itemsSelectedFolder = <bool>[];
 
   FilesForDirectoryData _files = new FilesForDirectoryData();
@@ -875,8 +876,8 @@ class _DirectoryDetailState extends State<DirectoryDetailNeu2> {
   bool morePageExist = false;
   bool isUploadingNewPage = false;
 
-  //List<AnimationController> _animationControllerFolder = new List<AnimationController>();
-  //List<AnimationController> _animationControllerFile = new List<AnimationController>();
+  List<AnimationController> _animationControllerFolder = [];
+  List<AnimationController> _animationControllerFile = [];
   bool isMultipleChoiceExpanded = false;
   // multi Select
   selectionModeActive() =>
@@ -1079,12 +1080,12 @@ class _DirectoryDetailState extends State<DirectoryDetailNeu2> {
               .where((x) => x.folderName != null)
               .forEach((element) {
             itemsSelectedFolder.add(false);
-            /*openMenuAnimateValuesFolder.add(false);
+            openMenuAnimateValuesFolder.add(false);
             _animationControllerFolder.add(new AnimationController(
               vsync: this,
               duration: Duration(milliseconds: 300),
               upperBound: 0.5,
-            ));*/
+            ));
           });
           value.result!.result!
               .where((x) => x.fileName != null)
@@ -1306,6 +1307,94 @@ class _DirectoryDetailState extends State<DirectoryDetailNeu2> {
                                               /*  SizedBox(
                                                 width: 11,
                                               ), */
+
+                                              //? Liste veya Preview Butonlari
+                                              Row(
+                                                children: [
+                                                  GestureDetector(
+                                                    onTap: () {
+                                                      setState(() {
+                                                        isListOrPreview = 'L';
+                                                      });
+                                                    },
+                                                    child: Container(
+                                                        width: 35,
+                                                        height: 35,
+                                                        decoration:
+                                                            BoxDecoration(
+                                                          color:
+                                                              isListOrPreview ==
+                                                                      'L'
+                                                                  ? Get
+                                                                      .theme
+                                                                      .colorScheme
+                                                                      .surface
+                                                                  : Colors
+                                                                      .white,
+                                                          boxShadow:
+                                                              standartCardShadow(),
+                                                          borderRadius:
+                                                              BorderRadius
+                                                                  .circular(10),
+                                                        ),
+                                                        child: Icon(
+                                                          Icons
+                                                              .format_list_bulleted,
+                                                          size: 19,
+                                                          color:
+                                                              isListOrPreview ==
+                                                                      'L'
+                                                                  ? Colors.white
+                                                                  : Color(
+                                                                      0xFF5c5c5c),
+                                                        )),
+                                                  ),
+                                                  SizedBox(
+                                                    width: 7,
+                                                  ),
+                                                  GestureDetector(
+                                                    onTap: () {
+                                                      setState(() {
+                                                        isListOrPreview = 'P';
+                                                      });
+                                                    },
+                                                    child: Container(
+                                                        width: 35,
+                                                        height: 35,
+                                                        decoration:
+                                                            BoxDecoration(
+                                                          color:
+                                                              isListOrPreview ==
+                                                                      'P'
+                                                                  ? Get
+                                                                      .theme
+                                                                      .colorScheme
+                                                                      .surface
+                                                                  : Colors
+                                                                      .white,
+                                                          boxShadow:
+                                                              standartCardShadow(),
+                                                          borderRadius:
+                                                              BorderRadius
+                                                                  .circular(10),
+                                                        ),
+                                                        child: Icon(
+                                                          Icons
+                                                              .description_outlined,
+                                                          size: 19,
+                                                          color:
+                                                              isListOrPreview ==
+                                                                      'P'
+                                                                  ? Colors.white
+                                                                  : Color(
+                                                                      0xFF5c5c5c),
+                                                        )),
+                                                  ),
+                                                ],
+                                              ),
+                                              SizedBox(
+                                                width: 11,
+                                              ),
                                               Expanded(
                                                 child: Column(
                                                   mainAxisAlignment:
@@ -1341,6 +1430,9 @@ class _DirectoryDetailState extends State<DirectoryDetailNeu2> {
                                                                     CrossAxisAlignment
                                                                         .center,
                                                                 children: [
+                                                                  SizedBox(
+                                                                      width:
+                                                                          15),
                                                                   //? ALL butonu
                                                                   Container(
                                                                       height:
@@ -1623,71 +1715,12 @@ class _DirectoryDetailState extends State<DirectoryDetailNeu2> {
                                         setState(() {});
                                       },
                                     ),
-                                  ), */
+                                  ), 
                                   SizedBox(
                                     width: 11,
                                   ),
+*/
 
-                                  //? Liste veya Preview Butonlari
-                                  Row(
-                                    children: [
-                                      GestureDetector(
-                                        onTap: () {
-                                          setState(() {
-                                            isListOrPreview = 'L';
-                                          });
-                                        },
-                                        child: Container(
-                                            width: 35,
-                                            height: 35,
-                                            decoration: BoxDecoration(
-                                              color: isListOrPreview == 'L'
-                                                  ? Get
-                                                      .theme.colorScheme.surface
-                                                  : Colors.white,
-                                              boxShadow: standartCardShadow(),
-                                              borderRadius:
-                                                  BorderRadius.circular(10),
-                                            ),
-                                            child: Icon(
-                                              Icons.format_list_bulleted,
-                                              size: 19,
-                                              color: isListOrPreview == 'L'
-                                                  ? Colors.white
-                                                  : Color(0xFF5c5c5c),
-                                            )),
-                                      ),
-                                      SizedBox(
-                                        width: 7,
-                                      ),
-                                      GestureDetector(
-                                        onTap: () {
-                                          setState(() {
-                                            isListOrPreview = 'P';
-                                          });
-                                        },
-                                        child: Container(
-                                            width: 35,
-                                            height: 35,
-                                            decoration: BoxDecoration(
-                                              color: isListOrPreview == 'P'
-                                                  ? Get
-                                                      .theme.colorScheme.surface
-                                                  : Colors.white,
-                                              boxShadow: standartCardShadow(),
-                                              borderRadius:
-                                                  BorderRadius.circular(10),
-                                            ),
-                                            child: Icon(
-                                              Icons.description_outlined,
-                                              size: 19,
-                                              color: isListOrPreview == 'P'
-                                                  ? Colors.white
-                                                  : Color(0xFF5c5c5c),
-                                            )),
-                                      ),
-                                    ],
-                                  ),
                                   // Container(
                                   //     width: 50,
                                   //     height: 50,
@@ -1807,6 +1840,7 @@ class _DirectoryDetailState extends State<DirectoryDetailNeu2> {
                           ],
                         ),
                       ),
+                      //? ADD buton
                       Positioned(
                         bottom: Get.height * 0.1,
                         right: 15,
@@ -2171,14 +2205,19 @@ class _DirectoryDetailState extends State<DirectoryDetailNeu2> {
     return Container(
         height: 40,
         decoration: BoxDecoration(
-          color: selectedLabelIndex == index ? ikonColor : primaryColor2,
-          // HexColor('${selectedLabelsColor[index]}'),
+          color: selectedLabelIndex == index
+              ? ikonColor
+              :
+              // primaryColor2,
+              HexColor('${selectedLabelsColor[index]}'),
           borderRadius: BorderRadius.circular(15),
           boxShadow: standartCardShadow(),
           border: Border.all(
               color: selectedLabelIndex == index
                   ? primaryColor2
-                  : ikonColor, // HexColor('${selectedLabelsColor[index]}'),
+                  :
+                  // ikonColor, //
+                  HexColor('${selectedLabelsColor[index]}'),
               width: 1),
         ),
         child: Padding(
@@ -2667,6 +2706,7 @@ class _DirectoryDetailState extends State<DirectoryDetailNeu2> {
     });
   }
 
+//? FOLDERVIEW
   Widget FolderView(DirectoryItem item, index, bool moveActionActive) {
     print('itemlabelssss' + item.labelList.toString());
     var dateFormatter =
@@ -2719,7 +2759,7 @@ class _DirectoryDetailState extends State<DirectoryDetailNeu2> {
         width: Get.width,
         height: 55, //openMenuAnimateValuesFolder[index] ? 125 : 80,
         duration: Duration(milliseconds: 350),
-        color: primaryColor2,
+        color: Colors.amber,
         /*     itemsSelectedFolder[index]
              ? 
             Color(0xFFdedede) 
@@ -2760,7 +2800,7 @@ class _DirectoryDetailState extends State<DirectoryDetailNeu2> {
             Expanded(
               child: Container(
                 decoration: BoxDecoration(
-                    color: Colors.white,
+                    color: Colors.pink,
                     borderRadius: BorderRadius.circular(15)),
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
@@ -2795,7 +2835,7 @@ class _DirectoryDetailState extends State<DirectoryDetailNeu2> {
                             ],
                           ),
                         ),
-                        /*InkWell(
+                        InkWell(
                           onTap: () {
                             /*if (!isAnyItemSelected()) {
                               setState(() {
@@ -2815,16 +2855,18 @@ class _DirectoryDetailState extends State<DirectoryDetailNeu2> {
                             width: 60,
                             height: 70,
                             child: RotationTransition(
-                              turns: Tween(begin: 0.0, end: 1.0).animate(_animationControllerFolder[index]),
+                              turns: Tween(begin: 0.0, end: 1.0)
+                              .animate(
+                                _animationControllerFolder[index]),
                               child: Icon(Icons.expand_more),
                             ),
                           ),
-                        )*/
+                        )
                       ],
                     ),
                     AnimatedContainer(
                       duration: Duration(milliseconds: 350),
-                      height: 0, //openMenuAnimateValuesFolder[index] ? 35 : 0,
+                      height: 35, //openMenuAnimateValuesFolder[index] ? 35 : 0,
                       padding: EdgeInsets.symmetric(horizontal: 15),
                       child: AnimatedOpacity(
                         opacity:
@@ -3697,5 +3739,2067 @@ class _DirectoryDetailState extends State<DirectoryDetailNeu2> {
     _controllerFiles.removeCopyAndMovePage = true;
     _controllerFiles.update();
     showToast(AppLocalizations.of(context)!.migrationcanceled);
+  }
+}
+ */
+
+import 'dart:convert';
+import 'dart:io';
+import 'dart:isolate';
+import 'dart:io';
+import 'dart:isolate';
+import 'dart:ui';
+
+import 'package:cached_network_image/cached_network_image.dart';
+import 'package:file_picker/file_picker.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
+
+import 'package:get/get.dart';
+import 'package:get/get_connect/http/src/utils/utils.dart';
+import 'package:intl/intl.dart';
+import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
+import 'package:path_provider/path_provider.dart';
+import 'package:percent_indicator/percent_indicator.dart';
+import 'package:rflutter_alert/rflutter_alert.dart';
+import 'package:share_plus/share_plus.dart';
+import 'package:undede/Clean_arch/DirectoryDetail.dart';
+import 'package:undede/Clean_arch/features/collobration_page/detail_page/view/directory_detail_page.dart';
+import 'package:undede/Controller/ControllerDB.dart';
+import 'package:undede/Controller/ControllerFiles.dart';
+import 'package:undede/Controller/ControllerLabel.dart';
+import 'package:undede/Controller/ControllerTodo.dart';
+import 'package:undede/Controller/ControllerUser.dart';
+import 'package:undede/Custom/CustomLoadingCircle.dart';
+import 'package:undede/Custom/DioDownloader.dart';
+import 'package:undede/Custom/FileGeneratorExcellorWord.dart';
+import 'package:undede/Custom/FileManagerType.dart';
+import 'package:undede/Custom/FileShare/FileShareFn.dart';
+import 'package:undede/Custom/FileTypesEnum.dart';
+import 'package:undede/Custom/MoveAndCopyModals/ChooseCommon.dart';
+import 'package:undede/Custom/MoveAndCopyModals/ChooseCustomer.dart';
+import 'package:undede/Custom/MoveAndCopyModals/ChooseFileManagerType.dart';
+import 'package:undede/Custom/showModalTextInput.dart';
+import 'package:undede/Custom/showModalYesOrNo.dart';
+import 'package:undede/Custom/showToast.dart';
+import 'package:undede/Pages/Camera/CameraPage.dart';
+import 'package:undede/Pages/DocumentAnalysis/DocumentAnalysis.dart';
+import 'package:undede/Pages/FileViewers/openFileFn.dart';
+import 'package:undede/Pages/ObjectDetection/detection_camera.dart';
+import 'package:undede/Pages/Private/CopyAndMovePage.dart';
+import 'package:undede/Pages/Private/DirectoryDetail.dart';
+import 'package:undede/Pages/Private/PrivateCommon.dart';
+import 'package:undede/WidgetsV2/Helper.dart';
+import 'package:undede/WidgetsV2/confirmDeleteWidget.dart';
+import 'package:undede/WidgetsV2/customCardShadow.dart';
+import 'package:undede/WidgetsV2/customTextField.dart';
+import 'package:undede/WidgetsV2/searchableDropDown.dart';
+import 'package:undede/model/Files/FilesForDirectory.dart';
+import 'package:undede/model/Files/UploadFiles.dart';
+import 'package:undede/model/Label/GetLabelByUserId.dart';
+import 'package:undede/model/Label/uploadLabels.dart';
+import 'package:undede/widgets/MyCircularProgress.dart';
+import 'package:http/http.dart' as http;
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+
+import 'package:cached_network_image/cached_network_image.dart';
+import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
+import 'package:path_provider/path_provider.dart';
+import 'package:percent_indicator/circular_percent_indicator.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:undede/Clean_arch/core/constants/constants.dart';
+import 'package:undede/Clean_arch/features/detail_page/DirectoryDetailNeu2.dart';
+import 'package:undede/Clean_arch/features/detail_page/view/widgets/custom_circle_avatar.dart';
+import 'package:undede/Clean_arch/features/detail_page/view/widgets/horizantal_card.dart';
+import 'package:undede/Clean_arch/features/detail_page/view/widgets/task_card.dart';
+import 'package:undede/Controller/ControllerCommon.dart';
+import 'package:undede/Controller/ControllerDB.dart';
+import 'package:undede/Controller/ControllerFiles.dart';
+import 'package:undede/Controller/ControllerLabel.dart';
+import 'package:undede/Controller/ControllerNotification.dart';
+import 'package:undede/Controller/ControllerTodo.dart';
+import 'package:undede/Controller/ControllerUser.dart';
+import 'package:undede/Custom/CustomLoadingCircle.dart';
+import 'package:undede/Custom/DioDownloader.dart';
+import 'package:undede/Custom/FileGeneratorExcellorWord.dart';
+import 'package:undede/Custom/FileManagerType.dart';
+import 'package:undede/Custom/FileShare/FileShareFn.dart';
+import 'package:undede/Custom/FileTypesEnum.dart';
+import 'package:undede/Custom/MoveAndCopyModals/ChooseCommon.dart';
+import 'package:undede/Custom/MoveAndCopyModals/ChooseCustomer.dart';
+import 'package:undede/Custom/MoveAndCopyModals/ChooseFileManagerType.dart';
+import 'package:undede/Custom/showModalTextInput.dart';
+import 'package:undede/Custom/showToast.dart';
+import 'package:undede/Clean_arch/features/collobration_page/detail_page/view/CommonDetailsPage2.dart';
+import 'package:undede/Pages/DocumentAnalysis/DocumentAnalysis.dart';
+import 'package:undede/Pages/Private/CopyAndMovePage.dart';
+import 'package:undede/Pages/Private/PrivateCommon.dart';
+import 'package:undede/WidgetsV2/Helper.dart';
+import 'package:undede/WidgetsV2/confirmDeleteWidget.dart';
+import 'package:undede/WidgetsV2/customCardShadow.dart';
+import 'package:undede/model/Common/CommonGroup.dart';
+import 'package:undede/model/Common/Commons.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:undede/model/Common/GetPermissionListResult.dart';
+import 'package:undede/model/Files/FilesForDirectory.dart';
+import 'package:undede/model/Label/GetLabelByUserId.dart';
+import 'package:undede/model/Label/uploadLabels.dart';
+import 'package:undede/model/Todo/CommonTodo.dart';
+
+class CommonDetailsPageNeu2 extends StatefulWidget {
+  final CommonTodo commonTodo;
+  Function? toggleSheetClose;
+  bool togglePlay;
+  int? openCommentId;
+  int? calendarId;
+  bool? cloudPerm = true;
+  bool? isDraggable = false;
+  bool isPrivate = false;
+  bool refreshPage = false;
+  Function? refreshPageFunction;
+  int todoId;
+  int commonBoardId;
+  int selectedTab;
+  String commonBoardTitle;
+  CommonDetailsPageNeu2(
+      {required this.todoId,
+      required this.commonBoardId,
+      required this.selectedTab,
+      required this.commonBoardTitle,
+      required this.commonTodo,
+      this.isPrivate = false,
+      this.openCommentId,
+      this.calendarId,
+      this.cloudPerm,
+      this.isDraggable,
+      this.toggleSheetClose,
+      this.togglePlay = false,
+      this.refreshPage = false,
+      this.refreshPageFunction});
+
+  @override
+  State<CommonDetailsPageNeu2> createState() => _CommonDetailsPage2State();
+}
+
+class _CommonDetailsPage2State extends State<CommonDetailsPageNeu2> {
+  GetAllCommonsResult _commons = GetAllCommonsResult(hasError: false);
+
+  ControllerDB _controllerDB = Get.put(ControllerDB());
+
+  ControllerTodo _controllerTodo = ControllerTodo();
+
+  ControllerNotification _controllerNotification = ControllerNotification();
+
+  ControllerCommon _controllerCommon = Get.put(ControllerCommon());
+
+  ScrollController _scrollController = ScrollController();
+  final double _scrollAmount = 100; //
+  ListOfCommonGroup? commonGroupList;
+  int? selectedCommonGroupId;
+  int? selectedCommonGroupIdForMove;
+  List<CommonGroup> _commonGroup = <CommonGroup>[];
+  String storedValue = '';
+  String SearchKey = "";
+  List<int> selectedLabelsId = [];
+  List<int> selectedLabelIndexes = [];
+  final List<DropdownMenuItem> cboUserList = [];
+  List<int> selectedUserIds = [];
+  List<int> selectedUserIndexes = [];
+  int selectedTypeWhoId = 0;
+  List<DropdownMenuItem> cboWhichSectionList = [];
+  int selectedWhichSectionId = 0;
+  List<DropdownMenuItem> cboIncludeElementList = [];
+  int selectedIncludeElementId = 0;
+  List<DropdownMenuItem> cboReminderIncludeList = [];
+  int selectedReminderIncludeId = 0;
+  DateTime? StartDate;
+  DateTime? EndDate;
+  List<int> selectedUsers = [];
+  int? selectedMenuItemIncommons;
+  bool isLoading = true;
+  int selectedIndex = 0;
+  CommonBoardListItem commonBoardListItem = CommonBoardListItem();
+  bool isFxIconStart = false;
+  int page = 0;
+  bool hasMore = false;
+
+  void scrollToIndex(int index) {
+    double screenWidth = MediaQuery.of(context).size.width;
+    double itemWidth = 200.0; // Card genişliği (örnek olarak)
+    double targetScrollX =
+        (index * itemWidth) - (screenWidth / 2) + (itemWidth / 2);
+
+    _scrollController.animateTo(
+      targetScrollX,
+      duration: Duration(milliseconds: 500),
+      curve: Curves.easeInOut,
+    );
+  }
+
+  changeGroup() async {
+    setState(() {
+      isLoading = true;
+    });
+    page = 0;
+    //  await getAllCommans();
+    // await loadPage(page);
+
+    setState(() {
+      isLoading = false;
+    });
+  }
+
+  @override
+  void initState() {
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      commonGroupList = await _controllerCommon.GetListCommonGroup(
+        _controllerDB.headers(),
+        userId: _controllerDB.user.value!.result!.id!,
+      ).then((value) async {
+        // common gruplar çekildikten sonra önyüze yansıtır
+        _commonGroup = await value.listOfCommonGroup!;
+        final prefs = await SharedPreferences.getInstance();
+        storedValue = prefs.getString('searchDropdownValue') ?? '';
+        if (storedValue != '') {
+          // If there is a stored value, find the matching CommonGroup
+          CommonGroup commonGroup = _commonGroup.firstWhere(
+              (group) => group.groupName == storedValue,
+              orElse: () =>
+                  _commonGroup.first // Fallback to the first group if not found
+              );
+          print('storedValue: $storedValue');
+          setState(() {
+            selectedCommonGroupId = commonGroup.id;
+            selectedCommonGroupIdForMove = commonGroup.id;
+          });
+          await changeGroup();
+
+          //  getAllCommans();
+        }
+
+        /*      await changeGroup();
+        await GetCommonGroupBackground(
+            0, _controllerDB.user.value!.result!.id!);
+ */
+        return value;
+      }).catchError((e) {
+        print("HATA : res GetGroupById error " + e.toString());
+        return ListOfCommonGroup(hasError: true); //!eklendi
+      });
+    });
+
+    super.initState();
+  }
+
+  GetTodoComments() async {
+    await _controllerTodo.GetTodoComments(
+      _controllerDB.headers(),
+      TodoId: widget.todoId,
+      UserId: _controllerDB.user.value!.result!.id!,
+    ).then((value) => {
+          setState(() {
+            print("value2" + value.toString());
+            isLoading = false;
+          })
+        });
+  }
+
+  /*  Future<void> getAllCommans() async 
+  {
+    await _controllerCommon.GetAllCommons(
+      //! Burada hata veriyor
+      _controllerDB.headers(),
+      userId: _controllerDB.user.value!.result!.id!, //! 2715
+      groupId: selectedCommonGroupId, //! 31 -- 119 oldu
+      search: SearchKey, //! Bos
+      UserIds: selectedUserIds, //!  Liste bos
+      LabelList: selectedLabelsId, //!  Liste bos
+      TypeWho: selectedTypeWhoId, //! 0
+      WhichSection: selectedWhichSectionId, //! 0
+      IncludeElement: selectedIncludeElementId, //! 0
+      ReminderInclude: selectedReminderIncludeId, //! 0
+      StartDate:
+          StartDate == null ? null : StartDate!.toIso8601String(), //! null
+      EndDate: EndDate == null ? null : EndDate!.toIso8601String(), //! null
+    );
+    try {
+      selectedMenuItemIncommons = _controllerCommon
+          .getAllCommons.value!.result!.commonBoardList!.first.id!;
+    } catch (e) {
+      selectedMenuItemIncommons = 0;
+    }
+
+    _commons = _controllerCommon.getAllCommons.value!;
+
+    _commons.result!.totalCount =
+        _controllerCommon.getAllCommons.value!.result!.commonBoardList!.length;
+
+    _commons.result != null
+        ? setState(() {
+            isLoading = false;
+          })
+        : isLoading = true;
+
+    for (var i = 0; i < _commons.result!.commonBoardList!.length; i++) {
+      String todoSearchKey = _commons.result!.commonBoardList![i].title!
+              .toLowerCase()
+              .contains(SearchKey.toLowerCase())
+          ? ""
+          : SearchKey;
+     
+      print(_commons.result!.commonBoardList![i].id);
+      print(_commons.result!.commonBoardList![i].isSearchResultTodo);
+      
+
+      await _controllerTodo.GetCommonTodos(_controllerDB.headers(),
+              userId: _controllerDB.user.value!.result!.id!,
+              commonId: _commons.result!.commonBoardList![i].id!,
+              search: _commons.result!.commonBoardList![i].isSearchResultTodo!
+                  ? SearchKey
+                  : null)
+          .then((todoResult) {
+        print(
+            'publicCommonBoardList:  todoResult: ${todoResult.listOfCommonTodo!.first.content}');
+        _commons.result!.commonBoardList!
+            .firstWhere((e) => e.id == _commons.result!.commonBoardList![i].id,
+                orElse: () => throw Exception("Board not found"))
+            .todos
+            .clear();
+        _commons.result!.commonBoardList!
+            .firstWhere((e) => e.id == _commons.result!.commonBoardList![i].id)
+            .todos
+            .addAll(todoResult.listOfCommonTodo!);
+
+        for (var k = 0; k < todoResult.listOfCommonTodo!.length; k++) {
+          _controllerTodo.GetTodoComments(
+            _controllerDB.headers(),
+            TodoId: todoResult.listOfCommonTodo![k].id!,
+            UserId: _controllerDB.user.value!.result!.id!,
+          ).then((todoCommentResult) => {
+                setState(() {
+                  _commons.result!.commonBoardList!
+                      .firstWhere((e) =>
+                          e.id == _commons.result!.commonBoardList![i].id)
+                      .todos
+                      .firstWhere(
+                          (e) => e.id == todoResult.listOfCommonTodo![k].id)
+                      .todoComments!
+                      .addAll(todoCommentResult.result!);
+                })
+              });
+
+          /* Kullanıcı todonun ownerı değil permission liste bak */
+          if (todoResult.listOfCommonTodo![k].userId !=
+              _controllerDB.user.value!.result!.id!) {
+            _controllerCommon.GetPermissionList(_controllerDB.headers(),
+                    DefinedRoleId:
+                        todoResult.listOfCommonTodo![k].definedRoleId)
+                .then((permissionListResult) {
+              if (!permissionListResult.hasError!) {
+                _controllerTodo.MyPermissionsOnTodos.add(new TodoPermission(
+                    permissionListResult.permissionList!,
+                    todoResult.listOfCommonTodo![k].id!,
+                    _commons.result!.commonBoardList![i].id!));
+                _controllerTodo.update();
+              }
+            });
+
+            print(_commons);
+          }
+          /* Kullanıcı todonun ownerı boş atalım*/
+          else {
+            // _controllerTodo.MyPermissionsOnTodos.add(new TodoPermission(
+            //     new List<Permission>(),
+            //     todoResult.listOfCommonTodo[k].id,
+            //     value.result.commonBoardList[i].id));
+            _controllerTodo.update();
+          }
+          /* Kullanıcı todonun ownerı değil permission liste bak */
+        }
+      });
+    }
+
+    for (var i = 0; i < _commons.result!.commonBoardList!.length; i++) {
+      await _controllerCommon.GetCommonUserList(
+        _controllerDB.headers(),
+        UserId: _controllerDB.user.value!.result!.id!,
+        CommonId: _commons.result!.commonBoardList![i].id!,
+      ).then((commonUserList) async {
+        if (!commonUserList.hasError!) {
+          /*
+            _commons.result.commonBoardList
+                .firstWhere((e) => e.id == value.result.commonBoardList[i].id,
+                    orElse: () => null)
+                .users
+                .clear();*/
+          _commons.result!.commonBoardList!
+              .firstWhere(
+                  (e) => e.id == _commons.result!.commonBoardList![i].id,
+                  orElse: () =>
+                      CommonBoardListItem() // Return empty CommonBoardListItem instead of null
+                  )
+              .users
+              .addAll(commonUserList.result!);
+
+          /* Kullanıcı boardun ownerı değil permission liste bak */
+          if (_commons.result!.commonBoardList![i].userId !=
+              _controllerDB.user.value!.result!.id!) {
+            await _controllerCommon.GetPermissionList(_controllerDB.headers(),
+                    DefinedRoleId:
+                        _commons.result!.commonBoardList![i].definedRoleId)
+                .then((permissionListResult) {
+              if (!permissionListResult.hasError!) {
+                _controllerCommon.MyPermissionsOnBoards.add(
+                    new CommonPermission(permissionListResult.permissionList!,
+                        _commons.result!.commonBoardList![i].id!));
+              }
+            });
+          }
+          /* Kullanıcı boardun ownerı boş atalım*/
+          else {
+            // _controllerCommon.MyPermissionsOnBoards.add(new CommonPermission(
+            //     new List<PermissionList>(), value.result.commonBoardList[i].id));
+          }
+          /* Kullanıcı boardun ownerı değil permission liste bak */
+        }
+      });
+    }
+  }
+ */
+
+  @override
+  void dispose() {
+    _scrollController.dispose();
+
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      backgroundColor: Colors.white,
+      appBar: AppBar(
+        title: Text("common_detail_page"),
+        backgroundColor: Colors.white,
+        // const Color(0xFFF5F7FA),
+        elevation: 0,
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back, color: Colors.black),
+          onPressed: () {
+            Navigator.pop(context);
+          },
+        ),
+/*
+        actions: [
+          SizedBox(
+              width: Get.width - 50,
+              height: 50,
+              child: isLoading
+                  ? const Center(child: CircularProgressIndicator())
+                  : Text("COMMON DETAIL PAGE IKONLAR")
+              //? Etiketler buraya Gelecek
+
+              /* showOnlyActionButtons(c)
+                                ? Container(color:Colors.blue)
+                                :  */
+              /* 
+                                 ListView.builder(
+                                           shrinkWrap: true,
+                                           padding:
+                                               EdgeInsets.zero,
+                                           itemCount:
+                                               selectedLabelsForLabel
+                                                       .length +
+                                                   1, // Add 1 for the extra widget
+                                           scrollDirection: Axis
+                                               .horizontal, // Set scroll direction to horizontal
+                                           itemBuilder:
+                                               (context, index) {
+                                             // Check if index is 0 to show the additional widget
+                                             if (index == 0) {
+                                               return GestureDetector(
+                                                 onTap: () async {
+                                                   await refresh();
+                                                 },
+                                                 child:
+                                                     //? ALL butonu
+                                                     Row(
+                                                   crossAxisAlignment:
+                                                       CrossAxisAlignment
+                                                           .center,
+                                                   children: [
+                                                     //? ALL butonu
+                                                     Container(
+                                                         height:
+                                                             40,
+                                                         decoration:
+                                                             BoxDecoration(
+                                                           color: const Color
+                                                               .fromARGB(
+                                                               255,
+                                                               159,
+                                                               15,
+                                                               15),
+                                                           borderRadius:
+                                                               BorderRadius.circular(15),
+                                                           boxShadow:
+                                                               standartCardShadow(),
+                                                         ),
+                                                         child:
+                                                             Padding(
+                                                           padding: const EdgeInsets
+                                                               .all(
+                                                               8.0),
+                                                           child:
+                                                               Align(
+                                                             alignment:
+                                                                 Alignment.center,
+                                                             child:
+                                                                 Text(
+                                                               AppLocalizations.of(context)!.all,
+                                                             ),
+                                                           ),
+                                                         )),
+                                                     SizedBox(
+                                                         width: 5),
+                                                   ],
+                                                 ), // Widget you want to display at the start
+                                               );
+                                             }
+                                             // Adjust index to account for the extra widget at the start
+                                             int adjustedIndex =
+                                                 index - 1;
+                                             return Row(
+                                               mainAxisAlignment:
+                                                   MainAxisAlignment
+                                                       .center,
+                                               children: [
+                                                 GestureDetector(
+                                                   onTap:
+                                                       () async {
+                                                     setState(() {
+                                                       selectedLabelIndex =
+                                                           adjustedIndex;
+                                                       isLoading =
+                                                           true;
+                                                     });
+                                          
+                                                     await _controllerFiles
+                                                         .GetFilesByUserIdForLabels(
+                                                       _controllerDB
+                                                           .headers(),
+                                                       userId: widget
+                                                               .userId ??
+                                                           _controllerDB
+                                                               .user
+                                                               .value!
+                                                               .result!
+                                                               .id,
+                                                       customerId: widget
+                                                               .todoId ??
+                                                           widget
+                                                               .customerId,
+                                                       moduleType: widget
+                                                           .fileManagerType!
+                                                           .typeId,
+                                                       keyword: "",
+                                                       labelIds: [
+                                                         selectedLabelIndexes[
+                                                             adjustedIndex]
+                                                       ],
+                                                       pageIndex:
+                                                           0,
+                                                       endDate: "",
+                                                       startDate:
+                                                           "",
+                                                       isPaid: 0,
+                                                       targetAccount:
+                                                           0,
+                                                     ).then(
+                                                         (value) async {
+                                                       _files
+                                                           .result
+                                                           ?.clear();
+                                                       if (value
+                                                           .hasError!) {
+                                                         print(value
+                                                                 .resultCode! +
+                                                             " hata");
+                                                       } else {
+                                                         if (value
+                                                                 .result!
+                                                                 .fileOCRs!
+                                                                 .length >
+                                                             0) {
+                                                           value
+                                                               .result!
+                                                               .fileOCRs!
+                                                               .where((x) =>
+                                                                   x.fileName !=
+                                                                   null)
+                                                               .forEach((element) {
+                                                             itemsSelectedFolder
+                                                                 .add(false);
+                                                           });
+                                                           _files.result!.addAll(value
+                                                               .result!
+                                                               .fileOCRs!);
+                                                         } else {
+                                                           morePageExist =
+                                                               false;
+                                                         }
+                                                       }
+                                                     });
+                                          
+                                                     setState(() {
+                                                       isLoading =
+                                                           false;
+                                                     });
+                                                   },
+                                                   child: _chipCard(
+                                                       selectedLabelsForLabel[
+                                                           adjustedIndex],
+                                                       adjustedIndex),
+                                                 ),
+                                                 SizedBox(
+                                                   width: 5,
+                                                 )
+                                               ],
+                                             );
+                                           },
+                                                                                                ),
+                                    
+ */
+              ),
+
+          // ],
+
+          /*      
+                ListView.builder(
+                    controller: _scrollController,
+                    scrollDirection: Axis.horizontal,
+                    itemCount:
+                        _commons.result!.commonBoardList!.toList().length,
+                    itemBuilder: (context, index) {
+                      var commonBoard =
+                          _commons.result!.commonBoardList!.toList();
+
+                      return HorizontalCard(
+                        selectedCarouselIndex: selectedIndex,
+                        index: index,
+                        title: index == commonBoard.length
+                            ? ("$index" +
+                                "." +
+                                AppLocalizations.of(context)!.invoice)
+                            : ("$index" + "." + commonBoard[index].title!),
+                        backgroundColor: Colors.white,
+                        onPressed: () {
+                          setState(() {
+                            scrollToIndex(index);
+                            selectedIndex = index;
+
+                            isFxIconStart = true;
+                          });
+                        },
+                      );
+                    }),
+        */
+        ],
+     */
+      ),
+      body: Row(
+        children: [
+          Expanded(
+            child: Padding(
+              padding: const EdgeInsets.fromLTRB(5, 0, 1, 0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  //? Yatay User AVATAR Widget
+
+                  //  const SizedBox(height: 15),
+                  //? Orta kisim
+                  Expanded(
+                    child: Container(
+                      //  color: Colors.amber,
+                      child: TaskCard2(
+                        title: 'Collaboration Page ',
+                        userImage:
+                            'https://img.freepik.com/free-vector/smiling-redhaired-boy-illustration_1308-176664.jpg?t=st=1738863165~exp=1738866765~hmac=4edda2637afeeb8700348a491dab74195219452c13922c942a49afe2830ce8e6&w=1060',
+                        backgroundColor: Colors.white,
+                        titleColor: const Color.fromARGB(255, 61, 216, 152),
+                        todoId: widget.todoId,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+/*
+          //? ICONS
+          Padding(
+            padding: const EdgeInsets.symmetric(vertical: 16.0, horizontal: 10),
+            child:
+                //_commons.result == null ? const SizedBox() : fxIcon(),
+                Column(
+              children: [
+                _buildCircularIcon(
+                  ikon: Icon(
+                    Icons.list,
+                    color: Colors.white,
+                  ),
+                ),
+                _buildCircularIcon(
+                  ikon: Icon(
+                    Icons.insert_drive_file,
+                    color: Colors.white,
+                  ),
+                ),
+                _buildCircularIcon(
+                  ikon: Icon(
+                    Icons.tag,
+                    color: Colors.white,
+                  ),
+                ),
+                _buildCircularIcon(
+                  ikon: Icon(
+                    Icons.add,
+                    color: Colors.white,
+                  ),
+                ),
+              ],
+            ),
+          ),
+      */
+        ],
+      ),
+    );
+  }
+
+  Widget _buildCircularIcon(
+      //String icon
+      {
+    List<CommonTodo>? commonTodo,
+    int? index,
+    Icon? ikon,
+    Function? onPressed,
+  }) {
+    return Column(
+      children: [
+        CircleAvatar(
+          backgroundColor: const Color.fromARGB(255, 109, 135, 178),
+          //  Color.fromARGB(254, 225, 228, 234),
+          radius: 28,
+          child: IconButton(
+            focusColor: Colors.black,
+            hoverColor: Colors.black,
+            splashColor: Colors.black,
+            highlightColor: Colors.black,
+            color: Colors.black,
+            icon: commonTodo == null
+                ? ikon!
+                : Image.network(commonTodo[index!].iconPath! == ""
+                    ? 'https://files.baulinx.de/Content/Icons/employment.png'
+                    : commonTodo[index].iconPath!),
+            onPressed: () {},
+          ),
+        ),
+        SizedBox(height: 6),
+      ],
+    );
+  }
+}
+
+class TaskCard2 extends StatelessWidget {
+  final String title;
+  final String userImage;
+  final Color backgroundColor;
+  final Color titleColor;
+  final int? todoId;
+
+  const TaskCard2({
+    super.key,
+    required this.title,
+    required this.userImage,
+    required this.backgroundColor,
+    required this.titleColor,
+    this.todoId,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+      height: 150,
+      child: Card(
+        color: Colors.white,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(24),
+        ),
+        child: DirectoryDetailOldest(
+          folderName: "",
+          hideHeader: true,
+          fileManagerType: FileManagerType.CommonTask,
+          todoId: todoId, //widget.todoId,
+        ),
+        /* 
+        Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              CircleAvatar(
+                backgroundImage: NetworkImage(userImage),
+                radius: 24,
+              ),
+              const SizedBox(width: 16),
+              Expanded(
+                child: Text(
+                  title,
+                  style: TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.w600,
+                    color: titleColor,
+                  ),
+                ),
+              ),
+              const Icon(Icons.check_circle, color: Colors.green),
+            ],
+          ),
+        ),
+     */
+      ),
+    );
+  }
+}
+
+class DirectoryDetailNeu2 extends StatefulWidget {
+  String? folderName;
+  int? userId; // report ve salary' de gelicek
+  bool? hideHeader;
+  FileManagerType? fileManagerType;
+  int? todoId;
+  int? customerId;
+  bool?
+      canViewFolders; //kopyalama veya taşıma için açılan fullscreen modalda klasörleri gezebilmesi için
+  String headerTitle;
+  DirectoryDetailNeu2(
+      {this.folderName,
+      this.userId,
+      this.hideHeader = false,
+      this.fileManagerType,
+      this.todoId,
+      this.customerId,
+      this.canViewFolders = false,
+      this.headerTitle = ""});
+
+  @override
+  _DirectoryDetailState createState() => _DirectoryDetailState();
+}
+
+class _DirectoryDetailState extends State<DirectoryDetailNeu2>
+    with TickerProviderStateMixin {
+  final GlobalKey<RefreshIndicatorState> _refreshIndicatorKey =
+      new GlobalKey<RefreshIndicatorState>();
+
+  bool isLoading = true;
+  String isListOrPreview = 'P'; // default preview geliyor.
+  ControllerFiles _controllerFiles = Get.put(ControllerFiles());
+  ControllerDB _controllerDB = Get.put(ControllerDB());
+  ControllerLabel _controllerLabel = ControllerLabel();
+  List<bool> openMenuAnimateValuesFolder = [];
+  List<bool> openMenuAnimateValuesFile = [];
+  List<bool> itemsSelectedFolder = <bool>[];
+
+  FilesForDirectoryData _files = new FilesForDirectoryData();
+
+  int page = 0;
+  ScrollController _scrollController = new ScrollController();
+  bool morePageExist = false;
+  bool isUploadingNewPage = false;
+
+  List<AnimationController> _animationControllerFolder = [];
+  List<AnimationController> _animationControllerFile = [];
+  bool isMultipleChoiceExpanded = false;
+  // multi Select
+  selectionModeActive() =>
+      selectedFileIdList.length > 0 || itemsSelectedFolder.contains(true);
+  List<int> selectedFileIdList = [];
+  int? ModulType;
+  int? CustomerId;
+  // Mail
+  ControllerUser _controllerUser = Get.put(ControllerUser());
+
+  String? selectedMail;
+  int? selectedMailId;
+
+  TextEditingController _password = TextEditingController();
+  TextEditingController _message = TextEditingController();
+  TextEditingController _receiver = TextEditingController();
+  TextEditingController _subject = TextEditingController();
+  List<DropdownMenuItem> cmbEmails = [];
+
+// inserLabelList
+  ControllerLabel controllerLabel = Get.put(ControllerLabel());
+  GetLabelByUserIdResult _getLabelByUserIdResult =
+      GetLabelByUserIdResult(hasError: false);
+  final List<DropdownMenuItem> cboLabelsList = [];
+  List<UserLabel> labelsList = <UserLabel>[];
+  List<int> selectedLabels = [];
+  List<String> selectedLabelsForLabel = [];
+  int? selectedLabelIndex;
+
+  List<int> selectedLabelIndexes = [];
+  List<String> selectedLabelsColor = [];
+  uploadLabels selectedLabelAndFiles = uploadLabels();
+  TextEditingController txtSearchController = new TextEditingController();
+  int? folderViewLeng;
+  bool _loadingFile = false;
+  final ReceivePort _port = ReceivePort();
+
+  //! void
+  Future<List<int>> getTodoList() async {
+    await controllerLabel.GetTodoLabelList(
+      _controllerDB.headers(),
+      TodoId: widget.todoId,
+      UserId: _controllerDB.user.value!.result!.id,
+    ).then((value) {
+      selectedLabelIndexes.clear();
+      selectedLabelsColor.clear();
+      selectedLabels.clear();
+      //print('Selected Indexes:s:' + value.result!.first.labelId.toString());
+
+      if (value.result != null && value.result!.length > 0) {
+        setState(() {
+          value.result!.forEach((label) {
+            if (!selectedLabelIndexes.contains(label.labelId!)) {
+              selectedLabelIndexes.add(label.labelId!);
+              selectedLabelsForLabel.add(label.labelTitle!);
+              selectedLabelsColor.add(label.labelColor!);
+              print(
+                  'Selected Indexes: ${label.todoLabelId} + ${label.labelId}');
+              print(
+                  'Selected Indexes: $selectedLabelIndexes + $selectedLabelsForLabel ');
+            }
+          });
+        });
+      }
+    });
+    return selectedLabelIndexes;
+  }
+
+  void getLabelByUserId() async {
+    await controllerLabel.GetLabelByUserId(_controllerDB.headers(),
+            Id: 0, UserId: _controllerDB.user.value!.result!.id, CustomerId: 0)
+        .then((value) {
+      labelsList = value.result!;
+
+      List.generate(controllerLabel.getLabel.value!.result!.length, (index) {
+        if (selectedLabelsForLabel
+            .contains(controllerLabel.getLabel.value!.result![index].title)) {
+          cboLabelsList.add(DropdownMenuItem(
+              child: Row(
+                children: [
+                  Text(controllerLabel.getLabel.value!.result![index].title!),
+                  Icon(
+                    Icons.lens,
+                    color: Color(int.parse(
+                        controllerLabel.getLabel.value!.result![index].color!
+                            .replaceFirst('#', "FF"),
+                        radix: 16)),
+                  )
+                ],
+              ),
+              key: Key(controllerLabel.getLabel.value!.result![index].title!
+                  .toString()),
+              value: controllerLabel.getLabel.value!.result![index].title! +
+                  "+" +
+                  controllerLabel.getLabel.value!.result![index].color!));
+        }
+      });
+    });
+  }
+
+  Future<void> refresh({bool withoutSetstate = false}) async {
+    if (!withoutSetstate) {
+      setState(() {
+        page = 0;
+        isLoading = true;
+      });
+    } else {
+      page = 0;
+      isLoading = true;
+    }
+
+    itemsSelectedFolder.clear();
+    selectedFileIdList.clear();
+
+    await _controllerFiles.GetFilesByUserIdForDirectory(_controllerDB.headers(),
+            userId: widget.userId ?? _controllerDB.user.value!.result!.id,
+            customerId: widget.todoId ?? widget.customerId,
+            moduleType: widget.fileManagerType!.typeId,
+            directory: widget.folderName,
+            page: 0)
+        .then((value) async {
+      value.result!.result!
+          .where((x) => x.folderName != null)
+          .forEach((element) {
+        itemsSelectedFolder.add(false);
+        openMenuAnimateValuesFolder.add(false);
+        _animationControllerFolder.add(new AnimationController(
+          vsync: this,
+          duration: Duration(milliseconds: 300),
+          upperBound: 0.5,
+        ));
+      });
+      value.result!.result!.where((x) => x.fileName != null).forEach((element) {
+        openMenuAnimateValuesFile.add(false);
+        _animationControllerFile.add(new AnimationController(
+          vsync: this,
+          duration: Duration(milliseconds: 300),
+          upperBound: 0.5,
+        ));
+      });
+      _files = value.result!;
+    });
+
+    if (_files.totalPage! > 1)
+      morePageExist = true;
+    else
+      morePageExist = false;
+
+    setState(() {
+      isLoading = false;
+    });
+  }
+
+  Future<void> loadMore() async {
+    setState(() {
+      page++;
+      isUploadingNewPage = true;
+    });
+
+    await _controllerFiles.GetFilesByUserIdForDirectory(_controllerDB.headers(),
+            userId: widget.userId ?? _controllerDB.user.value!.result!.id,
+            customerId: widget.todoId ?? widget.customerId,
+            moduleType: widget.fileManagerType!.typeId,
+            directory: widget.folderName,
+            page: page)
+        .then((value) async {
+      if (value.hasError!) {
+        print(value.resultCode! + " hata");
+      } else {
+        if (value.result!.result!.length > 0) {
+          value.result!.result!
+              .where((x) => x.folderName != null)
+              .forEach((element) {
+            itemsSelectedFolder.add(false);
+            openMenuAnimateValuesFolder.add(false);
+            _animationControllerFolder.add(new AnimationController(
+              vsync: this,
+              duration: Duration(milliseconds: 300),
+              upperBound: 0.5,
+            ));
+          });
+          value.result!.result!
+              .where((x) => x.fileName != null)
+              .forEach((element) {
+            openMenuAnimateValuesFile.add(false);
+            _animationControllerFile.add(new AnimationController(
+              vsync: this,
+              duration: Duration(milliseconds: 300),
+              upperBound: 0.5,
+            ));
+          });
+          print('valueresult' + value.result!.result!.toString());
+          _files.result!.addAll(value.result!.result!);
+        } else
+          morePageExist = false;
+      }
+    });
+
+    setState(() {
+      isUploadingNewPage = false;
+    });
+  }
+
+  DeleteMultiFileAndDirectory(List<int> FileIdList, int CustomerId) async {
+    await _controllerFiles.DeleteMultiFileAndDirectory(
+      _controllerDB.headers(),
+      UserId: widget.userId ?? _controllerDB.user.value!.result!.id,
+      CustomerId: CustomerId ?? widget.todoId ?? widget.customerId,
+      ModuleTypeId: widget.fileManagerType!.typeId,
+      FileIdList: FileIdList,
+      SourceDirectoryNameList: _controllerFiles.SourceDirectoryNameList,
+      SourceOwnerId: widget.userId ?? _controllerDB.user.value!.result!.id,
+    );
+  }
+
+  String? _localPath;
+
+  Future<void> _prepareSaveDir() async {
+    _localPath = (await _findLocalPath());
+    final savedDir = Directory(_localPath!);
+    bool hasExisted = await savedDir.exists();
+    if (!hasExisted) {
+      savedDir.create();
+    }
+  }
+
+  Future<String> _findLocalPath() async {
+    var externalStorageDirPath;
+    if (Platform.isAndroid) {
+      try {
+        final directory = "/storage/emulated/0/Download/";
+        externalStorageDirPath = directory;
+      } catch (e) {
+        final directory = await getExternalStorageDirectory();
+        externalStorageDirPath = directory?.path;
+      }
+    } else if (Platform.isIOS) {
+      externalStorageDirPath =
+          (await getApplicationDocumentsDirectory()).absolute.path;
+    }
+    return externalStorageDirPath;
+  }
+
+  SendEMail(String Receivers, String Subject, String Message,
+      List<int> Attachtments, int Type, int UserEmailId, String Password) {
+    _controllerFiles.SendEMail(_controllerDB.headers(),
+        UserId: widget.userId ?? _controllerDB.user.value!.result!.id,
+        Receivers: Receivers,
+        Subject: Subject,
+        Message: Message,
+        Attachtments: Attachtments,
+        Type: Type,
+        UserEmailId: UserEmailId,
+        Password: Password);
+  }
+
+  InsertFileListLabelList(List<int> FilesIds, List<int> LabelIds) async {
+    await controllerLabel.InsertFileListLabelList(_controllerDB.headers(),
+        UserId: widget.userId ?? _controllerDB.user.value!.result!.id,
+        FilesIds: FilesIds,
+        LabelIds: LabelIds);
+  }
+
+  bool showOnlyActionButtons(ControllerFiles c) =>
+      selectionModeActive() || c.isCopyActionActive || c.isMoveActionActive;
+
+  Future<void> moveAndCopyAction(
+      BuildContext context, bool isMove, String title) async {
+    FileManagerType fmt = await chooseFileManagerType(
+        context, title, AppLocalizations.of(context)!.okey);
+
+    print("Seçilen FileManagerType = " + fmt.toString());
+
+    if (!(fmt == FileManagerType.CommonDocument ||
+        fmt == FileManagerType.CommonTask)) {
+      setState(() {
+        if (isMove)
+          _controllerFiles.isMoveActionActive =
+              !_controllerFiles.isMoveActionActive;
+        else
+          _controllerFiles.isCopyActionActive =
+              !_controllerFiles.isCopyActionActive;
+
+        _controllerFiles.sourceDirectory = widget.folderName;
+        _controllerFiles.sourceModuleTypeId = widget.fileManagerType!.typeId;
+      });
+    }
+
+    if (fmt == FileManagerType.CommonDocument) {
+      int commonId = (await chooseCommon(
+          context,
+          AppLocalizations.of(context)!.chooseBoard,
+          AppLocalizations.of(context)!.okey,
+          false))['CommonId'];
+
+      if (isMove) {
+        _controllerFiles.MoveDirectoryAndFile(_controllerDB.headers(),
+            CustomerId: null,
+            TargetModuleTypeId: fmt.typeId,
+            TargetDirectoryName: "",
+            SourceModuleTypeId: widget.fileManagerType!.typeId,
+            SourceDirectoryNameList: _controllerFiles.SourceDirectoryNameList,
+            FileIdList: _controllerFiles.FileIdList,
+            TargetOwnerId: commonId,
+            SourceOwnerId: null);
+        refresh();
+      } else {
+        _controllerFiles.CopyDirectoryAndFile(_controllerDB.headers(),
+            CustomerId: null,
+            TargetModuleTypeId: fmt.typeId,
+            TargetDirectoryName: "",
+            SourceModuleTypeId: widget.fileManagerType!.typeId,
+            SourceDirectoryNameList: _controllerFiles.SourceDirectoryNameList,
+            FileIdList: _controllerFiles.FileIdList,
+            TargetOwnerIdList: [commonId],
+            SourceOwnerId: null);
+      }
+    } else if (fmt == FileManagerType.CommonTask) {
+      int commonTodoId = (await chooseCommon(
+          context,
+          AppLocalizations.of(context)!.chooseProject,
+          AppLocalizations.of(context)!.okey,
+          true))['CommonTodoId'];
+
+      if (isMove) {
+        _controllerFiles.isMoveActionActive = true;
+        _controllerFiles.update();
+        await Get.to(
+            CopyAndMovePage(
+              userId: _controllerDB.user.value!.result!.id,
+              folderName: "",
+              hideHeader: false,
+              fileManagerType: FileManagerType.CommonTask,
+              todoId: commonTodoId,
+              customerId: commonTodoId,
+            ),
+            fullscreenDialog: true);
+        _controllerFiles.isMoveActionActive = false;
+        _controllerFiles.update();
+
+        _controllerFiles.MoveDirectoryAndFile(_controllerDB.headers(),
+            CustomerId: null,
+            TargetModuleTypeId: fmt.typeId,
+            TargetDirectoryName: "",
+            SourceModuleTypeId: widget.fileManagerType!.typeId,
+            SourceDirectoryNameList: _controllerFiles.SourceDirectoryNameList,
+            FileIdList: _controllerFiles.FileIdList,
+            TargetOwnerId: commonTodoId,
+            SourceOwnerId: null);
+        refresh();
+      } else if (fmt != FileManagerType.PrivateDocument) {
+        _controllerFiles.isCopyActionActive = true;
+        _controllerFiles.update();
+        await Get.to(
+            CopyAndMovePage(
+              userId: _controllerDB.user.value!.result!.id,
+              folderName: "",
+              hideHeader: false,
+              fileManagerType: FileManagerType.CommonTask,
+              todoId: commonTodoId,
+              customerId: commonTodoId,
+            ),
+            fullscreenDialog: true);
+        _controllerFiles.isCopyActionActive = false;
+        _controllerFiles.update();
+
+        _controllerFiles.CopyDirectoryAndFile(_controllerDB.headers(),
+            CustomerId: null,
+            TargetModuleTypeId: fmt.typeId,
+            TargetDirectoryName: "",
+            SourceModuleTypeId: widget.fileManagerType!.typeId,
+            SourceDirectoryNameList: _controllerFiles.SourceDirectoryNameList,
+            FileIdList: _controllerFiles.FileIdList,
+            TargetOwnerIdList: [commonTodoId],
+            SourceOwnerId: null);
+      }
+    } else if (fmt == FileManagerType.PrivateDocument) {
+      Get.to(
+          CopyAndMovePage(
+            userId: _controllerDB.user.value!.result!.id,
+            folderName: "",
+            hideHeader: false,
+            fileManagerType: fmt,
+            todoId: widget.todoId ?? widget.customerId,
+          ),
+          fullscreenDialog: true);
+    } else {
+      int selectedCustomerId = await ChooseCustomer(
+          context,
+          AppLocalizations.of(context)!.chooseCustomer,
+          AppLocalizations.of(context)!.okey);
+
+      Get.to(
+          CopyAndMovePage(
+            userId: _controllerDB
+                .user.value!.result!.userCustomers!.userCustomerList!
+                .firstWhere((e) => e.id == selectedCustomerId)
+                .customerAdminId,
+            customerId: selectedCustomerId,
+            folderName: "",
+            hideHeader: false,
+            fileManagerType: fmt,
+            todoId: widget.todoId ?? widget.customerId,
+          ),
+          fullscreenDialog: true);
+    }
+  }
+
+  GestureDetector TopBarButton(Function onTap, IconData iconData,
+      {String iconasset = ''}) {
+    return GestureDetector(
+      onTap: onTap(),
+      child: Container(
+          width: 40,
+          height: 40,
+          decoration: BoxDecoration(
+            color: Get.theme.colorScheme.surface,
+            boxShadow: standartCardShadow(),
+            borderRadius: BorderRadius.circular(10),
+          ),
+          child: iconasset != ''
+              ? IconButton(
+                  onPressed: onTap(),
+                  icon: ImageIcon(
+                    AssetImage(
+                      'assets/images/icon/$iconasset.png',
+                    ),
+                    size: 24,
+                    color: Colors.white,
+                  ),
+                )
+              : Icon(iconData, size: 19, color: Colors.white)),
+    );
+  }
+
+  List<DirectoryItem> fileFilter() {
+    var abc = _files.result!
+        .where((x) => (txtSearchController.text != ""
+            ? x.fileName!
+                .toLowerCase()
+                .contains(txtSearchController.text.toLowerCase())
+            : true))
+        .toList();
+    print("abc.length" + abc.length.toString());
+    return abc;
+  }
+
+  List<DirectoryItem> fileFilter2() {
+    var doluFilenameListesi =
+        _files.result!.where((veri) => veri.fileName != null).toList();
+
+    print("abc.length2" + doluFilenameListesi.length.toString());
+    return doluFilenameListesi;
+  }
+
+  List<DirectoryItem> folderFilter2() {
+    var doluFoldernameListesi =
+        _files.result!.where((veri) => veri.folderName != null).toList();
+
+    print("abc.length2" + doluFoldernameListesi.length.toString());
+    return doluFoldernameListesi;
+  }
+
+  List<DirectoryItem> folderFilter() {
+    var abc = _files.result!
+        .where((x) => (txtSearchController.text != ""
+            ? x.folderName!
+                .toLowerCase()
+                .contains(txtSearchController.text.toLowerCase())
+            : true))
+        .toList();
+    print("abc.length2" + abc.length.toString());
+    return abc;
+  }
+
+  Future<void> OpenFileFn(DirectoryItem item) async {
+    setState(() {
+      _loadingFile = true;
+    });
+    await openFile(item);
+    setState(() {
+      _loadingFile = false;
+    });
+  }
+
+//? FOLDERVIEW
+  Widget FolderView(DirectoryItem item, index, bool moveActionActive) {
+    print('itemlabelssss' + item.labelList.toString());
+    var dateFormatter =
+        new DateFormat.yMMMMd(AppLocalizations.of(context)!.localeName);
+    return InkWell(
+      onLongPress: () {
+        setState(() {
+          closeAllExpandedListItems();
+          itemsSelectedFolder[index] = !itemsSelectedFolder[index];
+        });
+      },
+      onTap: () {
+        if (isAnyItemSelected()) {
+          closeAllExpandedListItems();
+        }
+
+        if (isAnyItemSelected()) {
+          setState(() {
+            itemsSelectedFolder[index] = !itemsSelectedFolder[index];
+          });
+        } else if (!isAnyItemSelected() || moveActionActive) {
+          if (moveActionActive && !widget.canViewFolders!) {
+            setState(() {
+              print('seçili itemler bırakıldı taşıma için');
+              print("itemsSelectedFolder : " + itemsSelectedFolder.toString());
+            });
+          } else
+            print("navigaotr push");
+
+          /*  {
+            Navigator.push(
+                context,
+                new MaterialPageRoute(
+                    builder: (BuildContext context) => new DirectoryDetailNeu2(
+                          userId: widget.userId ??
+                              _controllerDB.user.value!.result!.id,
+                          customerId: widget.customerId,
+                          folderName:
+                              widget.folderName! + "/" + item.folderName!,
+                          hideHeader: widget
+                              .hideHeader, // ilk hangisi verildiyse o şekilde devam etmeli
+                          fileManagerType: widget
+                              .fileManagerType, // ilk hangisi verildiyse o şekilde devam etmeli
+                          todoId: widget.todoId ??
+                              widget
+                                  .customerId, // ilk hangisi verildiyse o şekilde devam etmeli
+                          canViewFolders: widget.canViewFolders,
+                        )));
+          } */
+        }
+      },
+      //? DIRECTORY Choose
+
+      child: AnimatedContainer(
+        // width: Get.width,
+        height: openMenuAnimateValuesFolder[index] ? 125 : 90,
+        duration: Duration(milliseconds: 350),
+        color: Colors.green,
+        /*     itemsSelectedFolder[index]
+             ? 
+            Color(0xFFdedede) 
+            : 
+            Colors.transparent, */
+
+        padding: EdgeInsets.symmetric(horizontal: 20, vertical: 5),
+        child: Container(
+          decoration: BoxDecoration(
+              color: Colors.blue, borderRadius: BorderRadius.circular(15)),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Row(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Container(
+                    margin: EdgeInsets.only(left: 15),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          item.folderName ?? "",
+                          style: TextStyle(
+                              fontSize: 15,
+                              fontWeight: FontWeight.w400,
+                              color: Colors.black),
+                        ),
+                        Text(
+                          item.createDateTime == null
+                              ? AppLocalizations.of(context)!.noDate
+                              : "${dateFormatter.format(item.createDateTime!)}",
+                          style: TextStyle(
+                              fontSize: 13,
+                              fontWeight: FontWeight.w500,
+                              color: const Color.fromARGB(255, 205, 12, 12)),
+                        )
+                      ],
+                    ),
+                  ),
+                  InkWell(
+                    onTap: () {
+                      if (!isAnyItemSelected()) {
+                        setState(() {
+                          if (openMenuAnimateValuesFolder[index]) {
+                            _animationControllerFolder[index]
+                              ..reverse(from: 0.5);
+                          } else {
+                            _animationControllerFolder[index]
+                              ..forward(from: 0.0);
+                          }
+                          openMenuAnimateValuesFolder[index] =
+                              !openMenuAnimateValuesFolder[index];
+                        });
+                      }
+                    },
+                    child: Container(
+                      width: 60,
+                      height: 70,
+                      child: RotationTransition(
+                        turns: Tween(begin: 0.0, end: 1.0)
+                            .animate(_animationControllerFolder[index]),
+                        child: Icon(Icons.expand_more),
+                      ),
+                    ),
+                  )
+                ],
+              ),
+              AnimatedContainer(
+                duration: Duration(milliseconds: 350),
+                height: 35, //openMenuAnimateValuesFolder[index] ? 35 : 0,
+                padding: EdgeInsets.symmetric(horizontal: 15),
+                child: AnimatedOpacity(
+                  opacity: 0, //openMenuAnimateValuesFolder[index] ? 1 : 0,
+                  duration: Duration(milliseconds: 350),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      expandMoreIcons(
+                        () {},
+                        Icons.drive_file_move,
+                        false,
+                      ),
+                      expandMoreIcons(
+                        () {},
+                        Icons.content_copy,
+                        false,
+                      ),
+                      expandMoreIcons(
+                        () async {
+                          String? newFolderName = await renameDirectory(
+                            await showModalTextInput(
+                              context,
+                              AppLocalizations.of(context)!.changeFolderName,
+                              AppLocalizations.of(context)!.save,
+                            ).toString(),
+                            item.folderName!,
+                            item.customerId!,
+                          );
+
+                          setState(() async {
+                            item.folderName = newFolderName;
+                          });
+                        },
+                        Icons.edit_rounded,
+                        false,
+                      ),
+                      expandMoreIcons(
+                        () async {
+                          bool? isAccepted = await showModalYesOrNo(
+                              context,
+                              AppLocalizations.of(context)!.deletingaFolder,
+                              '${item.folderName} ${AppLocalizations.of(context)!.folderwillbedeleted}\n${AppLocalizations.of(context)!.doyouconfirm}');
+
+                          if (isAccepted!) await DeleteDirectory(item);
+                        },
+                        Icons.delete_rounded,
+                        false,
+                      ),
+                    ],
+                  ),
+                ),
+              )
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  bool isAnyItemSelected() =>
+      selectedFileIdList.length > 0 || itemsSelectedFolder.contains(true);
+
+  Widget FileViewInListView(DirectoryItem item, int index) {
+    var dateFormatter =
+        new DateFormat.yMMMMd(AppLocalizations.of(context)!.localeName);
+
+    bool isSelected = selectedFileIdList.contains(item.id);
+
+    return InkWell(
+      onTap: () async {
+        if (selectionModeActive()) {
+          setState(() {
+            if (isSelected)
+              selectedFileIdList.remove(item.id);
+            else
+              selectedFileIdList.add(item.id!);
+          });
+        } else
+          await OpenFileFn(item);
+      },
+      onLongPress: () {
+        setState(() {
+          if (isSelected)
+            selectedFileIdList.remove(item.id);
+          else
+            selectedFileIdList.add(item.id!);
+        });
+      },
+      child: AnimatedContainer(
+        width: Get.width,
+        height: 65, //openMenuAnimateValuesFile[index] ? 125 : 80,
+        duration: Duration(milliseconds: 350),
+        color: isSelected ? Color(0xFFdedede) : Colors.transparent,
+        padding: EdgeInsets.symmetric(horizontal: 20, vertical: 5),
+        child: Row(
+          children: [
+            Container(
+              width: 80,
+              decoration: BoxDecoration(
+                  color: Colors.white, borderRadius: BorderRadius.circular(15)),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Center(
+                    child: item.fileName != null
+                        ? Image.asset(
+                            getImagePathByFileExtension(
+                                item.fileName!.split('.').last),
+                            width: 27,
+                          )
+                        : Container(color: Colors.amber),
+                  ),
+                ],
+              ),
+            ),
+            SizedBox(
+              width: 5,
+            ),
+            Expanded(
+              child: Container(
+                decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(15)),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Row(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Container(
+                          margin: EdgeInsets.only(left: 15),
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                item.fileName != null
+                                    ? item.fileName!.length > 15
+                                        ? item.fileName!.substring(
+                                            item.fileName!.length - 15)
+                                        : item.fileName!
+                                    : "Bos",
+                                style: TextStyle(
+                                    fontSize: 15,
+                                    fontWeight: FontWeight.w500,
+                                    color: Colors.black),
+                              ),
+                              SizedBox(
+                                height: 5,
+                              ),
+                              Text(
+                                "${dateFormatter.format(item.createDateTime!)}",
+                                style: TextStyle(
+                                    fontSize: 13,
+                                    fontWeight: FontWeight.w500,
+                                    color: Colors.grey),
+                              )
+                            ],
+                          ),
+                        ),
+                        InkWell(
+                          onTap: () {
+                            if (!isAnyItemSelected()) {
+                              setState(() {
+                                if (openMenuAnimateValuesFile[index]) {
+                                  _animationControllerFile[index]
+                                    ..reverse(from: 0.5);
+                                } else {
+                                  _animationControllerFile[index]
+                                    ..forward(from: 0.0);
+                                }
+                                openMenuAnimateValuesFile[index] =
+                                    !openMenuAnimateValuesFile[index];
+                              });
+                            }
+                          },
+                          child: Container(
+                            width: 60,
+                            height: 70,
+                            child: RotationTransition(
+                              turns: Tween(begin: 0.0, end: 1.0)
+                                  .animate(_animationControllerFile[index]),
+                              child: Icon(Icons.expand_more),
+                            ),
+                          ),
+                        )
+                      ],
+                    ),
+                    AnimatedContainer(
+                      duration: Duration(milliseconds: 350),
+                      height: openMenuAnimateValuesFile[index] ? 35 : 0,
+                      padding: EdgeInsets.symmetric(horizontal: 15),
+                      child: AnimatedOpacity(
+                        opacity: openMenuAnimateValuesFile[index] ? 1 : 0,
+                        duration: Duration(milliseconds: 350),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            expandMoreIcons(() {}, Icons.drive_file_move,
+                                openMenuAnimateValuesFile[index]),
+                            expandMoreIcons(() {}, Icons.content_copy,
+                                openMenuAnimateValuesFile[index]),
+                            expandMoreIcons(() async {
+                              RenameFile(item); //! await kaldirildi
+                            }, Icons.edit_rounded,
+                                openMenuAnimateValuesFile[index]),
+                            expandMoreIcons(() async {
+                              if (await showModalYesOrNo(context, 'Dosya Silme',
+                                      '${item.fileName} dosyası silenecek.\nOnaylıyor musunuz?') ??
+                                  false) {
+                                if (await DeleteFile(item)) {
+                                  setState(() {
+                                    _files.result!.removeWhere((x) =>
+                                        x.id == item.id &&
+                                        x.folderName == item.folderName);
+                                    openMenuAnimateValuesFile[index] = false;
+                                  });
+                                }
+                              }
+                            }, Icons.delete_rounded,
+                                openMenuAnimateValuesFile[index]),
+                          ],
+                        ),
+                      ),
+                    )
+                  ],
+                ),
+              ),
+            )
+          ],
+        ),
+      ),
+    );
+  }
+
+  bool changed = true;
+
+  getUserEmailList() async {
+    await _controllerUser.GetUserEmailList(_controllerDB.headers(),
+            UserId: _controllerDB.user.value!.result!.id, UserEmailId: 0)
+        .then((value) {
+      selectedMailId = 0;
+      cmbEmails.add(DropdownMenuItem(
+        value: 0,
+        child: Text("Baulinx"),
+      ));
+      if (!(value.result!.isBlank!)) {
+        selectedMail = value.result!.first.userName!;
+        for (int i = 0; i < value.result!.length; i++) {
+          cmbEmails.add(DropdownMenuItem(
+            value: value.result![i].id,
+            child: Text(value.result![i].userName!),
+          ));
+        }
+      }
+    });
+    setState(() {});
+  }
+
+  //! void kaldirildi
+  uploadFiles(Files files) async {
+    bool isCombine = false;
+    print("widget.folderName" + widget.folderName.toString());
+
+    if (files.fileInput!.length > 1 && widget.folderName != "Picture") {
+      bool? result = await showModalYesOrNo(
+          context,
+          AppLocalizations.of(context)!.fileUpload,
+          AppLocalizations.of(context)!.doyouwanttocombinefiles);
+      isCombine = result!;
+    }
+    print("_controllerFiles.progres" + _controllerFiles.progres.toString());
+    return await widget.folderName != "Picture"
+        ? _controllerFiles.UploadFiles(
+            _controllerDB.headers(),
+            UserId: _controllerDB.user.value!.result!.id,
+            CustomerId: widget.todoId ?? widget.customerId,
+            ModuleTypeId: widget.fileManagerType!.typeId,
+            files: files,
+            OwnerId: widget.todoId ?? widget.customerId,
+            IsCombine: isCombine,
+            CombineFileName:
+                widget.folderName != "Picture" ? "sample.pdf" : "sample.jpeg",
+          ).then((value) async {
+            await Future.delayed(Duration(seconds: 1));
+            await refresh();
+            //todo: apiden dönen resulta göre lokaldeki listeye eklenecek. hız için önemli
+          })
+        : _controllerFiles.UploadFilesToPrivate(
+            _controllerDB.headers(),
+            UserId: _controllerDB.user.value!.result!.id,
+            CustomerId: widget.todoId ?? widget.customerId,
+            ModuleTypeId: widget.fileManagerType!.typeId,
+            files: files,
+            OwnerId: widget.todoId ?? widget.customerId,
+            IsCombine: false,
+            CombineFileName:
+                widget.folderName != "Picture" ? "sample.jpeg" : "sample.jpeg",
+          ).then((value) async {
+            if (value)
+              showToast(AppLocalizations.of(context)!.fileisnotuploaded);
+            else {
+              showToast(AppLocalizations.of(context)!.fileisuploaded);
+              await Future.delayed(Duration(seconds: 1));
+              //todo: apiden dönen resulta göre lokaldeki listeye eklenecek. hız için önemli
+              await refresh();
+            }
+          });
+  }
+
+  Future<String> renameDirectory(String newDirectoryName,
+      String currentDirectoryName, int sourceOwnerId) async {
+    return await _controllerFiles.RenameDirectory(_controllerDB.headers(),
+            UserId: _controllerDB.user.value!.result!.id,
+            ModuleTypeId: widget.fileManagerType!.typeId,
+            DirectoryName: widget.folderName! + "${currentDirectoryName}",
+            NewDirectoryName: newDirectoryName,
+            SourceOwnerId: sourceOwnerId)
+        .then((value) {
+      if (value) {
+        showToast(AppLocalizations.of(context)!.errorfailedtochangefoldername);
+        return currentDirectoryName;
+      } else {
+        showToast(AppLocalizations.of(context)!
+            .thefoldernamehasbeensuccessfullychanged);
+        return newDirectoryName;
+      }
+    });
+  }
+
+  void RenameFile(DirectoryItem item) async {
+    String? newFileName = await showModalTextInput(
+        context,
+        AppLocalizations.of(context)!.changefileName,
+        AppLocalizations.of(context)!.save);
+    if (newFileName!.isEmpty) return;
+    await _controllerFiles.RenameFile(_controllerDB.headers(),
+            UserId: _controllerDB.user.value!.result!.id,
+            FileId: item.id!,
+            NewFileName: newFileName)
+        .then((value) {
+      if (value) {
+        showToast(AppLocalizations.of(context)!.errorFailedtochangefilename);
+      } else {
+        showToast(AppLocalizations.of(context)!
+            .thefilenamehasbeensuccessfullychanged);
+        setState(() {
+          item.fileName = newFileName;
+        });
+      }
+    });
+  }
+
+  DeleteDirectory(DirectoryItem item) async {
+    await _controllerFiles.DeleteDirectory(_controllerDB.headers(),
+            UserId: _controllerDB.user.value!.result!.id,
+            CustomerId: null,
+            ModuleTypeId: widget.fileManagerType!.typeId,
+            DirectoryName: widget.folderName! + "${item.folderName}")
+        .then((value) {
+      if (value) {
+        showToast(AppLocalizations.of(context)!.errorFailedtodeletefolder);
+      } else {
+        _files.result!.removeWhere(
+            (x) => x.id == item.id && x.folderName == item.folderName);
+        showToast(
+            AppLocalizations.of(context)!.thefolderhasbeendeletedsuccessfully);
+      }
+    });
+  }
+
+  Future<bool> DeleteFile(DirectoryItem item) async {
+    return await _controllerFiles.DeleteFile(_controllerDB.headers(),
+            UserId: _controllerDB.user.value!.result!.id, FileId: item.id!)
+        .then((value) {
+      if (value) {
+        showToast(AppLocalizations.of(context)!.errorFailedtodeletefile);
+        return false;
+      } else {
+        showToast(AppLocalizations.of(context)!.thefilewassuccessfullydeleted);
+        return true;
+      }
+    });
+  }
+
+  void closeAllExpandedListItems() {
+    setState(() {
+      print('--------------------');
+      print(openMenuAnimateValuesFolder.length.toString());
+      for (int i = 0; openMenuAnimateValuesFolder.length > i; i++) {
+        print(openMenuAnimateValuesFolder[i]);
+        if (openMenuAnimateValuesFolder[i]) {
+          openMenuAnimateValuesFolder[i] = false;
+          _animationControllerFolder[i].reset();
+        }
+      }
+      for (int i = 0; openMenuAnimateValuesFile.length > i; i++) {
+        print(openMenuAnimateValuesFile[i]);
+        if (openMenuAnimateValuesFile[i]) {
+          openMenuAnimateValuesFile[i] = false;
+          _animationControllerFile[i].reset();
+        }
+      }
+    });
+  }
+
+  ControllerTodo _controllerTodo = Get.put(ControllerTodo());
+
+  @override
+  void initState() {
+    _prepareSaveDir();
+    selectedLabelAndFiles.labelIds = <LabelIds>[];
+    selectedLabelAndFiles.filesIds = <FilesIds>[];
+
+    super.initState();
+
+    _scrollController.addListener(() async {
+      if (!isUploadingNewPage &&
+          _scrollController.position.atEdge &&
+          _scrollController.position.pixels != 0) {
+        print("morePageExist" + morePageExist.toString());
+        if (morePageExist) {
+          await loadMore();
+        }
+      }
+    });
+    getUserEmailList();
+    getLabelByUserId();
+    refresh();
+
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      await getTodoList();
+      setState(() {});
+    });
+  }
+
+  @override
+  void dispose() {
+    _animationControllerFile.asMap().forEach((key, value) {
+      _animationControllerFile[key].dispose();
+    });
+    _animationControllerFolder.asMap().forEach((key, value) {
+      _animationControllerFolder[key].dispose();
+    });
+
+    _controllerTodo.refreshNote = true;
+    //_controllerTodo.update();
+    /*   if (mounted) {
+      _controllerTodo.dispose();
+    } */
+
+    _controllerFiles.update();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return GetBuilder<ControllerFiles>(builder: (c) {
+      if (c.refreshPrivate) {
+        refresh(withoutSetstate: true);
+        c.refreshPrivate = false;
+        if (_scrollController.hasClients) {
+          _scrollController.animateTo(
+            0.0,
+            curve: Curves.easeOut,
+            duration: const Duration(milliseconds: 300),
+          );
+        }
+        c.update();
+      }
+
+      return isLoading
+          ? CustomLoadingCircle()
+          : Scaffold(
+              backgroundColor: // const Color.fromARGB(255, 226, 134, 5),
+                  Colors.white,
+              floatingActionButtonLocation:
+                  FloatingActionButtonLocation.miniStartFloat,
+              body: ModalProgressHUD(
+                  child: Stack(
+                    children: [
+                      Container(
+                        height: Get.height,
+                        width: Get.width,
+                        child: Column(
+                          children: [
+                            Expanded(
+                              child: SingleChildScrollView(
+                                controller: _scrollController,
+                                physics: BouncingScrollPhysics(),
+                                child: Column(
+                                  children: [
+                                    Column(
+                                      children: [
+                                        ListView.builder(
+                                            shrinkWrap: true,
+                                            padding: EdgeInsets.zero,
+                                            itemCount: folderFilter2().length,
+                                            physics:
+                                                NeverScrollableScrollPhysics(),
+                                            itemBuilder: (context, index) {
+                                              DirectoryItem item =
+                                                  folderFilter2()[index];
+
+                                              if (widget.fileManagerType ==
+                                                      FileManagerType
+                                                          .PrivateDocument &&
+                                                  item.folderName ==
+                                                      'Picture' &&
+                                                  widget.folderName == '') {
+                                                return Container(
+                                                    color: Colors
+                                                        .deepPurpleAccent);
+                                              } else {
+                                                if (item.folderName == null) {
+                                                  return Container(
+                                                      color:
+                                                          const Color.fromARGB(
+                                                              255,
+                                                              174,
+                                                              65,
+                                                              80));
+                                                } else
+                                                  return FolderView(item, index,
+                                                      c.isMoveActionActive);
+                                              }
+                                            }),
+                                      ],
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+                  inAsyncCall: _controllerFiles.percenteg > 0 || _loadingFile,
+                  progressIndicator: new CircularPercentIndicator(
+                    circularStrokeCap: CircularStrokeCap.round,
+                    radius: 100.0,
+                    lineWidth: 10.0,
+                    backgroundColor: Colors.purpleAccent,
+                    //Get.theme.primaryColor,
+                    percent: (_controllerFiles.percenteg / 100) > 1
+                        ? 1.0
+                        : (_controllerFiles.percenteg / 100),
+                    center: Container(
+                      child: new Text(
+                        "${_controllerFiles.percenteg}%",
+                        style: TextStyle(
+                          fontSize: 24,
+                          fontWeight: FontWeight.w500,
+                        ),
+                      ),
+                    ),
+                    progressColor: Get.theme.secondaryHeaderColor,
+                  )),
+            );
+    });
   }
 }

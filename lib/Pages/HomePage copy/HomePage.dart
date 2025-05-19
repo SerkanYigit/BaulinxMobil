@@ -4,7 +4,7 @@ import 'package:flutter/scheduler.dart';
 import 'package:ionicons/ionicons.dart';
 import 'package:undede/Clean_arch/core/constants/constants.dart';
 import 'package:undede/Clean_arch/features/collobration_page/detail_page/view/common_detail_page.dart';
-import 'package:undede/Pages/Collaboration/CommonDetailsPage2.dart';
+import 'package:undede/Clean_arch/features/collobration_page/detail_page/view/CommonDetailsPage2.dart';
 import 'package:undede/Pages/HomePage%20copy/Bauzeienplan.dart';
 import 'package:undede/Pages/HomePage/DashBoardNew.dart';
 import 'package:undede/Pages/HomePage/Provider/HomePageProvider.dart';
@@ -1615,6 +1615,7 @@ AwesomeNotifications()
                   )
                 : Expanded(
                     child: ListView.builder(
+                      physics: BouncingScrollPhysics(),
                       itemExtent: 55,
                       padding: EdgeInsets.fromLTRB(0, 10, 0, 0),
                       itemCount: commonBoardListItem.todos.length,
@@ -1627,7 +1628,7 @@ AwesomeNotifications()
 
                         return GestureDetector(
                           onTap: () {
-/*
+                            /*
                             draggableSheetController.updateBoardTodoAndListItem(
                                 commonBoardListItem.todos[index],
                                 commonBoardListItem);
@@ -1748,6 +1749,12 @@ AwesomeNotifications()
                       },
                     ),
                   ),
+            SizedBox(
+                child: Container(
+              color: Colors.white,
+              width: Get.width,
+              height: 100,
+            )),
           ],
         ));
   }

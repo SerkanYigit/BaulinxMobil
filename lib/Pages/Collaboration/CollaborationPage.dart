@@ -28,7 +28,7 @@ import 'package:undede/Custom/showToast.dart';
 import 'package:undede/Pages/Camera/CameraPage.dart';
 import 'package:undede/Pages/Collaboration/BoardCloudPage.dart';
 import 'package:undede/Pages/Collaboration/CommonDetailsPage.dart';
-import 'package:undede/Pages/Collaboration/CommonDetailsPage2.dart';
+import 'package:undede/Clean_arch/features/collobration_page/detail_page/view/CommonDetailsPage2.dart';
 import 'package:undede/Pages/Private/PrivateCommon.dart';
 import 'package:undede/Services/Label/LabelDb.dart';
 import 'package:undede/WidgetsV2/CustomAppBar.dart';

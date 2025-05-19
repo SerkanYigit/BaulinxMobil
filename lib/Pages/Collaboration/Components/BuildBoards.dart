@@ -8,7 +8,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
 import 'package:undede/Custom/CustomLoadingCircle.dart';
-import 'package:undede/Pages/Collaboration/CommonDetailsPage2.dart';
+import 'package:undede/Clean_arch/features/collobration_page/detail_page/view/CommonDetailsPage2.dart';
 import 'package:undede/Pages/HomePage/DashBoardNew.dart';
 import 'package:undede/model/Common/Commons.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';

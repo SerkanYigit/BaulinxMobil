@@ -50,7 +50,7 @@ class ChatDB implements ChatBase {
     log("res ChatMessageSaveResult = " + response.body);
 
     if (response.body.isEmpty) {
-          return ChatMessageSaveResult(hasError: true);
+      return ChatMessageSaveResult(hasError: true);
     } else {
       final responseData = jsonDecode(response.body) as Map<String, dynamic>;
       if (responseData["HasError"]) {
@@ -86,8 +86,7 @@ class ChatDB implements ChatBase {
         Uri.parse(_serviceUrl.getUserList + "?request.userId=${userId}"),
         headers: header);
 
-    log("req GetUserListtttttt = ");
-        log("req GetUserList = " + response.request!.url.toString());
+    log("req GetUserList = " + response.request!.url.toString());
     log("res GetUserList = " + response.body);
 
     if (response.body.isEmpty) {
@@ -268,7 +267,7 @@ class ChatDB implements ChatBase {
 
   @override
   Future<GetUnreadCountByUserIdResult> GetUnreadCountByUserId(
-        Map<String, String> header,
+    Map<String, String> header,
   ) async {
     var response = await http.get(
       Uri.parse(_serviceUrl.getUnreadCountByUserId +

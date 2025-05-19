@@ -1018,6 +1018,23 @@ print(matchingIdsFunctional); // Çıktı: [1, 2, 4]
                         ),
                       ],
                     ),
+                    GestureDetector(
+                      onTap: () {},
+                      child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Container(
+                          padding: EdgeInsets.all(8),
+                          height: 40,
+                          color: Colors.lightGreen,
+                          child: Row(
+                            children: [
+                              Icon(Icons.filter_alt_outlined),
+                              Text("Filter"),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
                     ListView.builder(
                         controller: _scrollController,
                         physics: BouncingScrollPhysics(),

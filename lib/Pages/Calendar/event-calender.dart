@@ -24,7 +24,7 @@ import 'package:undede/Custom/openFileFormessage.dart';
 import 'package:undede/Custom/showModalYesOrNo.dart';
 import 'package:undede/Pages/Camera/CameraPage.dart';
 import 'package:undede/Pages/Collaboration/CommonDetailsPage.dart';
-import 'package:undede/Pages/Collaboration/CommonDetailsPage2.dart';
+import 'package:undede/Clean_arch/features/collobration_page/detail_page/view/CommonDetailsPage2.dart';
 import 'package:undede/Pages/Private/PrivateCommon.dart';
 import 'package:undede/Services/Common/CommonDB.dart';
 import 'package:undede/Services/TodoService/TodoDB.dart';
@@ -174,10 +174,10 @@ class EventCalendarState extends State<EventCalendar> {
                     onCalendarLongPress, onCalendarTapDetails)),
           ),
           Positioned(
-              bottom: 30,
+              bottom: 50,
               right: 20,
-              height: Get.height / 5,
-              width: Get.width / 5,
+              height: Get.height / 7,
+              width: Get.width / 7,
               child: SpeedDial(
                 childMargin: EdgeInsets.only(bottom: 20, top: 18),
                 //   marginEnd: 18,  marginBottom: 20, //! yerine childMargin kullanildi

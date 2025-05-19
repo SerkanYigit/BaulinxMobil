@@ -102,13 +102,26 @@ class _CommonDetailEditPageState extends State<CommonDetailEditPage> {
   bool isloading = true;
   int? SelectedRole;
   //! void kaldirildi
+
   getDefinedRoleList() async {
     await _controllerCommon.GetDefinedRoleList(_controllerDB.headers())
         .then((value) {
       _getDefinedRoleListResult = value;
-      SelectedRole = value.result!
+      /*  SelectedRole = value.result!
           .firstWhere((element) => element.moduleType == value.result)
-          .id;
+          .id; */
+      if (value.result != null && value.result!.isNotEmpty) {
+        final foundElement = value.result!.firstWhereOrNull((element) =>
+            element.moduleType ==
+            14); // firstWhereOrNull kullanın veya kendiniz kontrol edin
+        if (foundElement != null) {
+          SelectedRole = foundElement.id;
+        } else {
+          // Aranan eleman bulunamadıysa ne yapılacağını burada belirleyin (örneğin, varsayılan bir değer atayın veya bir hata mesajı gösterin).
+          print("Hata: moduleType 31 olan eleman bulunamadı.");
+        }
+      }
+
       for (int i = 0;
           i < _getDefinedRoleListResult.result!.length //! ?? 0 silindi
           ;
@@ -425,7 +438,7 @@ class _CommonDetailEditPageState extends State<CommonDetailEditPage> {
   @override
   Widget build(BuildContext context) {
     return loading && isLoading && isLoading2
-        ? Text("commondetail") //CustomLoadingCircle()
+        ? CustomLoadingCircle()
         : Container(
             width: Get.width,
             padding: EdgeInsets.fromLTRB(20, 0, 20, 20),

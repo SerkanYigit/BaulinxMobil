@@ -4,6 +4,7 @@ import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:undede/Clean_arch/core/constants/constants.dart';
 import 'package:undede/WidgetsV2/customCardShadow.dart';
 
 class UploadOption {
@@ -14,7 +15,7 @@ class UploadOption {
   UploadOption({this.color, this.iconData, this.title, this.onTapFunction});
 }
 
-List<UploadOption> uploadOptions =  <UploadOption>[];
+List<UploadOption> uploadOptions = <UploadOption>[];
 
 Future<dynamic> selectUploadType(BuildContext context,
     {bool folderEnable = false,
@@ -216,21 +217,22 @@ Future<dynamic> selectUploadType(BuildContext context,
                                     height: 350.0,
                                     width: 350,
                                     decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(15),
-                                      color: Get.theme.colorScheme.secondary,
-                                    ),
+                                        borderRadius: BorderRadius.circular(15),
+                                        color: primaryYellowColor
+                                        // Get.theme.colorScheme.secondary,
+                                        ),
                                     child: Column(
                                       mainAxisAlignment:
                                           MainAxisAlignment.center,
                                       children: [
-                                        uploadOptions[index].iconData!    ,
+                                        uploadOptions[index].iconData!,
                                         SizedBox(
                                           height: 10,
                                         ),
                                         Text(
                                           uploadOptions[index].title!,
                                           style: TextStyle(
-                                              color: Colors.grey,
+                                              color: Colors.black,
                                               fontWeight: FontWeight.w500),
                                         ),
                                       ],

@@ -5,7 +5,7 @@ import 'package:undede/Clean_arch/core/constants/constants.dart';
 import 'package:undede/Clean_arch/features/detail_page/view/detail_page.dart';
 import 'package:undede/Clean_arch/features/detail_page/view/widgets/custom_circle_avatar.dart';
 import 'package:undede/Clean_arch/features/detail_page/view/widgets/task_card.dart';
-import 'package:undede/Pages/Collaboration/CommonDetailsPage2.dart';
+import 'package:undede/Clean_arch/features/collobration_page/detail_page/view/CommonDetailsPage2.dart';
 import 'package:undede/Pages/HomePage%20copy/HomePage.dart';
 import 'package:undede/Pages/Profile/ProfileInvoiceHistory/InvoiceHistory.dart';
 import 'package:undede/Services/Invoice/InvoiceBase.dart';
@@ -1146,107 +1146,101 @@ AwesomeNotifications()
               ),
             ],
           ),
-          body: Row(
-            children: [
-              Expanded(
-                child: Padding(
-                  padding: const EdgeInsets.all(1.0),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      /*      Padding(
-                        padding: const EdgeInsets.fromLTRB(18, 0, 0, 0),
-                        child: Text(
-                          AppLocalizations.of(context)!.users,
-                          style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            fontSize: 20,
-                          ),
-                        ),
-                      ), */
-                      //? Users
-                      /*   
-                      SizedBox(
-                        height: 60,
-                        child: isLoading == true
-                            ? const Center(child: CircularProgressIndicator())
-                            : _getUserListResult.result == null
-                                ? Container()
-                                : ListView.builder(
-                                    padding: EdgeInsets.fromLTRB(18, 0, 0, 10),
-                                    //   controller: _scrollController,
-                                    scrollDirection: Axis.horizontal,
-                                    itemCount:
-                                        _getUserListResult.result!.length,
-                                    itemBuilder: (context, index) {
-                                      return _getUserListResult.result == null
-                                          ? Container(color: Colors.amber)
-                                          : DocumentUserPhoto(
-                                              onTap: () {
-                                                Navigator.of(context).push(
-                                                    MaterialPageRoute(
-                                                        builder: (_) {
-                                                  return ChatPage();
-                                                }));
-                                              },
-                                              urlPhoto: _getUserListResult
-                                                  .result![index].photo,
-                                            );
-                                      /* CustomCircleAvatar(
-                                              urlImage: _getUserListResult
-                                                      .result![index].photo ??
-                                                  'https://img.freepik.com/free-vector/smiling-redhaired-boy-illustration_1308-176664.jpg?t=st=1738863165~exp=1738866765~hmac=4edda2637afeeb8700348a491dab74195219452c13922c942a49afe2830ce8e6&w=1060',
-                                              title: "title $index",
-                                              backgroundColor: Colors.white,
-                                              onPressed: () {}); */
-                                    }),
+          body: Expanded(
+            child: Padding(
+              padding: const EdgeInsets.all(1.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  /*      Padding(
+                    padding: const EdgeInsets.fromLTRB(18, 0, 0, 0),
+                    child: Text(
+                      AppLocalizations.of(context)!.users,
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 20,
                       ),
- */
-                      //? Yatay butonlar
-                      /*   Padding(
-                        padding: const EdgeInsets.fromLTRB(18, 10, 0, 0),
-                        child: Text(
-                          AppLocalizations.of(context)!.setModule,
-                          style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            fontSize: 20,
-                          ),
-                        ),
-                      ), */
-                      Padding(
-                        padding: const EdgeInsets.fromLTRB(18, 20, 18, 10),
-                        child: yatayIkonlar(),
-                      ),
-                      //? Dikey Card Widget
-                      _commonGroup.isNotEmpty
-                          ? Container(
-                              height: 200,
-                              child: CardWidgetHomePage(
-                                selectedCommonGroupId: selectedCommonGroupId,
-                                commonGroup: _commonGroup,
-                                commons: _commons,
-                                commonBoardListItemm: commonBoardListItemm,
-                                scrollController: _scrollController,
-                              ),
-                            )
-                          : Container()
-                    ],
+                    ),
+                  ), */
+                  //? Users
+                  /*   
+                  SizedBox(
+                    height: 60,
+                    child: isLoading == true
+                        ? const Center(child: CircularProgressIndicator())
+                        : _getUserListResult.result == null
+                            ? Container()
+                            : ListView.builder(
+                                padding: EdgeInsets.fromLTRB(18, 0, 0, 10),
+                                //   controller: _scrollController,
+                                scrollDirection: Axis.horizontal,
+                                itemCount:
+                                    _getUserListResult.result!.length,
+                                itemBuilder: (context, index) {
+                                  return _getUserListResult.result == null
+                                      ? Container(color: Colors.amber)
+                                      : DocumentUserPhoto(
+                                          onTap: () {
+                                            Navigator.of(context).push(
+                                                MaterialPageRoute(
+                                                    builder: (_) {
+                                              return ChatPage();
+                                            }));
+                                          },
+                                          urlPhoto: _getUserListResult
+                                              .result![index].photo,
+                                        );
+                                  /* CustomCircleAvatar(
+                                          urlImage: _getUserListResult
+                                                  .result![index].photo ??
+                                              'https://img.freepik.com/free-vector/smiling-redhaired-boy-illustration_1308-176664.jpg?t=st=1738863165~exp=1738866765~hmac=4edda2637afeeb8700348a491dab74195219452c13922c942a49afe2830ce8e6&w=1060',
+                                          title: "title $index",
+                                          backgroundColor: Colors.white,
+                                          onPressed: () {}); */
+                                }),
                   ),
-                ),
+           */
+                  //? Yatay butonlar
+                  /*   Padding(
+                    padding: const EdgeInsets.fromLTRB(18, 10, 0, 0),
+                    child: Text(
+                      AppLocalizations.of(context)!.setModule,
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 20,
+                      ),
+                    ),
+                  ), */
+                  Padding(
+                    padding: const EdgeInsets.fromLTRB(18, 20, 18, 10),
+                    child: yatayIkonlar(),
+                  ),
+                  //? Dikey Card Widget
+                  _commonGroup.isNotEmpty
+                      ? SingleChildScrollView(
+                          child: Container(
+                            color: Colors.white,
+                            height: 600,
+                            child: CardWidgetHomePageVertical(
+                              selectedCommonGroupId: selectedCommonGroupId,
+                              commonGroup: _commonGroup,
+                              commons: _commons,
+                              commonBoardListItemm: commonBoardListItemm,
+                              scrollController: _scrollController,
+                            ),
+                          ),
+                        )
+                      : Container(
+                          child: Text("Error"),
+                          color: Colors.amber,
+                        ),
+                ],
               ),
-              //? Dikey Ikonlar
-              /*   Padding(
-                padding:
-                    const EdgeInsets.symmetric(vertical: 16.0, horizontal: 10),
-                child: fxIcon(),
-                //  fxIcon(),
-              ), */
-            ],
+            ),
           ));
     });
   }
 
-/* 
   ListView listViewProject() {
     List<CommonBoardListItem> publicCommonBoardList = [];
     // CommonBoardListItem commonBoardListItem = CommonBoardListItem();
@@ -1288,7 +1282,7 @@ AwesomeNotifications()
       },
     );
   }
- */
+
   Widget yatayIkonlar() {
     //? Yatay Ikonlar
     return Container(
@@ -3891,6 +3885,112 @@ class CardWidgetHomePage extends StatelessWidget {
       padding: EdgeInsets.fromLTRB(18, 10, 18, 0),
       controller: scrollController,
       scrollDirection: Axis.horizontal,
+      itemCount: commonGroup.length, // 27
+      itemBuilder: (context, index) {
+        selectedCommonGroupId = commonGroup[index].id;
+        print("selectedCommonGroupId : " + selectedCommonGroupId.toString());
+        //getAllCommans();
+        CommonDB()
+            .GetAllCommons(
+          _controllerDB.headers(),
+          userId: _controllerDB.user.value!.result!.id!, //! 2715
+          groupId: selectedCommonGroupId, //! 31 -- 119 oldu
+          search: "", //! Bos
+          UserIds: [], //!  Liste bos
+          LabelList: [], //!  Liste bos
+          TypeWho: 0, //! 0
+          WhichSection: 0, //! 0
+          IncludeElement: 0, //! 0
+          ReminderInclude: 0, //! 0
+          StartDate: null, //! null
+          EndDate: null,
+        )
+            .then((value) async {
+          getAllCommonResult = value;
+          publicCommonBoardList = value.result!.commonBoardList!;
+          //  publicCommonBoardList = await controllerCommon
+          //     .getAllCommons.value!.result!.commonBoardList!;
+        });
+
+        /*    controllerCommon.GetAllCommons(
+          _controllerDB.headers(),
+          userId: _controllerDB.user.value!.result!.id!, //! 2715
+          groupId: selectedCommonGroupId, //! 31 -- 119 oldu
+          search: "", //! Bos
+          UserIds: [], //!  Liste bos
+          LabelList: [], //!  Liste bos
+          TypeWho: 0, //! 0
+          WhichSection: 0, //! 0
+          IncludeElement: 0, //! 0
+          ReminderInclude: 0, //! 0
+          StartDate: null, //! null
+          EndDate: null,
+        ).then((value) async {
+          publicCommonBoardList =  controllerCommon
+              .getAllCommons.value!.result!.commonBoardList!;
+        }); */
+
+        //  publicCommonBoardList =
+        //     controllerCommon.getAllCommons.value!.result!.commonBoardList!;
+        //commons.result!.commonBoardList!;
+//print(getAllCommonResult.result!.commonBoardList!.length);
+
+        // const SizedBox(height: 5),
+
+        return GestureDetector(
+          onTap: () {
+            //   commonBoardListItem = publicCommonBoardList;
+
+            print(commonBoardListItemm);
+            Navigator.of(context).push(MaterialPageRoute(
+                builder: (context) => HomePage3(
+                      commonBoardListItem: publicCommonBoardList,
+                      commonGroupSelected: commonGroup[index],
+                    )));
+          },
+          child: DashCard(
+            commonBoardListItem: publicCommonBoardList,
+            commonGroupSelected: commonGroup[index],
+            title: commonGroup[index].groupName!,
+            userImage:
+                'https://img.freepik.com/free-vector/smiling-redhaired-boy-illustration_1308-176664.jpg?t=st=1738863165~exp=1738866765~hmac=4edda2637afeeb8700348a491dab74195219452c13922c942a49afe2830ce8e6&w=1060',
+            backgroundColor: Colors.white,
+            titleColor: primaryBlackColor,
+          ),
+        );
+      },
+    );
+  }
+}
+
+class CardWidgetHomePageVertical extends StatelessWidget {
+  ScrollController? scrollController;
+  List<CommonGroup> commonGroup;
+  GetAllCommonsResult commons;
+  GestureTapCallback? onTap;
+  int? selectedCommonGroupId;
+  CommonBoardListItem? commonBoardListItemm;
+  ControllerCommon controllerCommon = Get.put(ControllerCommon());
+  CardWidgetHomePageVertical({
+    this.scrollController,
+    required this.commonGroup,
+    required this.commons,
+    this.selectedCommonGroupId,
+    this.onTap,
+    this.commonBoardListItemm,
+  });
+
+  ControllerDB _controllerDB = Get.put(ControllerDB());
+  @override
+  Widget build(BuildContext context) {
+    List<CommonBoardListItem> publicCommonBoardList = [];
+    // CommonBoardListItem commonBoardListItem = CommonBoardListItem();
+    GetAllCommonsResult getAllCommonResult =
+        GetAllCommonsResult(hasError: false);
+    return ListView.builder(
+      padding: EdgeInsets.fromLTRB(18, 10, 18, 0),
+      controller: scrollController,
+      scrollDirection: Axis.vertical,
       itemCount: commonGroup.length, // 27
       itemBuilder: (context, index) {
         selectedCommonGroupId = commonGroup[index].id;

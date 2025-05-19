@@ -11,7 +11,7 @@ import 'package:undede/Controller/ControllerNotification.dart';
 import 'package:undede/Controller/ControllerTodo.dart';
 import 'package:undede/Pages/Collaboration/CollaborationPage.dart';
 import 'package:undede/Pages/Collaboration/CommonDetailsPage.dart';
-import 'package:undede/Pages/Collaboration/CommonDetailsPage2.dart';
+import 'package:undede/Clean_arch/features/collobration_page/detail_page/view/CommonDetailsPage2.dart';
 import 'package:undede/WidgetsV2/CustomAppBar.dart';
 import 'package:undede/WidgetsV2/CustomAppBarWithSearch.dart';
 import 'package:undede/WidgetsV2/customCardShadow.dart';

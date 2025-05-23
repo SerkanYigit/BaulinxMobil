@@ -157,6 +157,7 @@ class _CommonDetailsPageState extends State<CommonDetailsPage>
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       await GetTodoComments();
       await getLabelByUserId();
+
       /*  
       await _controllerLabel.GetLabelByUserId(
         _controllerDB.headers(),
@@ -189,17 +190,19 @@ class _CommonDetailsPageState extends State<CommonDetailsPage>
         _checkedStates = List.generate(cboLabelsList.length, (index) => false);
       });
  */
-      setState(() {
-        _tabController!.animateTo(widget.selectedTab);
-        currentTab = widget.selectedTab;
-      });
+      if (mounted) {
+        setState(() {
+          _tabController!.animateTo(widget.selectedTab);
+          currentTab = widget.selectedTab;
+        });
+      }
     });
   }
 
   @override
   void dispose() {
     _tabController!.dispose();
-
+    _scrollController.dispose();
     super.dispose();
   }
 
@@ -209,10 +212,13 @@ class _CommonDetailsPageState extends State<CommonDetailsPage>
       TodoId: widget.todoId,
       UserId: _controllerDB.user.value!.result!.id!,
     ).then((value) => {
-          setState(() {
-            print(value);
-            isLoading = false;
-          })
+          if (mounted)
+            {
+              setState(() {
+                print(value);
+                isLoading = false;
+              })
+            }
         });
   }
 
@@ -299,6 +305,19 @@ class _CommonDetailsPageState extends State<CommonDetailsPage>
             });
   }
  */
+
+  InsertTodoLabelList(List<int> LabelIds) {
+    _controllerLabel.InsertTodoLabelList(_controllerDB.headers(),
+            TodoId: widget.todoId,
+            LabelIds: LabelIds,
+            UserId: _controllerDB.user.value!.result!.id!)
+        .then((value) {
+      if (value) {
+        print(value);
+      }
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     var shortestSide = MediaQuery.of(context).size.shortestSide;
@@ -329,8 +348,34 @@ class _CommonDetailsPageState extends State<CommonDetailsPage>
                           ],
                         ),
                       ),
+                      //? SAVE Button
                       GestureDetector(
-                        onTap: () {
+                        onTap: () async {
+                          /*    SelectedReminderValue == 0
+                          ? RemindDate = RemindDate!.add(Duration(
+                              minutes: int.parse(_reminderController.text),
+                            ))
+                          : SelectedReminderValue == 1
+                              ? RemindDate = RemindDate!.add(Duration(
+                                  hours: int.parse(_reminderController.text),
+                                ))
+                              : SelectedReminderValue == 2
+                                  ? RemindDate = RemindDate!.add(Duration(
+                                      days: int.parse(_reminderController.text),
+                                    ))
+                                  : RemindDate = RemindDate!.add(Duration()); */
+
+                          /*    await UpdateCommonTodos(
+                          _titleController.text,
+                          startDate.toString(),
+                          endDate.toString(),
+                          SelectedStatus!,
+                          RemindDate.toString()); */
+                          await InsertTodoLabelList(selectedLabels);
+                          //  await InviteUsersCommonTask(selectedUsers, SelectedRole!);
+                          //  _controllerCalendar.refreshCalendar = true;
+                          //  _controllerCalendar.update();
+
                           setState(() {
                             Navigator.pop(context); // Drawer'ı kapatır.
                           });
@@ -377,11 +422,43 @@ class _CommonDetailsPageState extends State<CommonDetailsPage>
                                       onChanged: (bool? value) {
                                         setState(() {
                                           _checkedStates[i] = value!;
-                                          selectedLabelIndexes.add(i);
-                                          selectedLabels.add(int.parse(
-                                              cboLabelsList[i].value));
-                                          print(selectedLabelIndexes);
-                                          print(selectedLabels);
+                                          /*    if (value) {
+                                            if (!selectedLabelIndexes
+                                                .contains(i)) {
+                                              selectedLabelIndexes.add(i);
+                                            } else {
+                                              selectedLabelIndexes.remove(i);
+                                            }
+                                          } */
+
+                                          // selectedLabels.add(int.parse(
+                                          //   cboLabelsList[i].value));
+                                          print("selectedLabelIndexes" +
+                                              selectedLabelIndexes.toString());
+
+                                          print("selectedLabels" +
+                                              selectedLabels.toString());
+                                          //   selectedLabels.clear();
+
+                                          /*for (int i = 0; i < value.length; i++) {
+                          String aStr = items
+                              .elementAt(i)
+                              .key
+                              .toString()
+                              .replaceAll(new RegExp(r'[^0-9]'), '');
+                          SelectedLabel = int.parse(aStr);
+                          selectedLabels.add(SelectedLabel);
+                        }*/
+                                          /*  labelsList
+                                              .asMap()
+                                              .forEach((index, value) {
+                                            selectedLabelIndexes
+                                                .forEach((selectedLabelIndex) {
+                                              if (selectedLabelIndex == index) {
+                                                selectedLabels.add(value.id!);
+                                              }
+                                            });
+                                          }); */
                                         });
                                       },
                                     ),
@@ -417,6 +494,14 @@ class _CommonDetailsPageState extends State<CommonDetailsPage>
             appBar: AppBar(
               title: Text(widget.commonBoardTitle),
               backgroundColor: Colors.white,
+              leading: IconButton(
+                icon: Icon(Icons.arrow_back),
+                onPressed: () {
+                  widget.togglePlay
+                      ? widget.toggleSheetClose!()
+                      : Navigator.pop(context);
+                },
+              ),
               actions: [
                 Builder(
                   builder: (BuildContext context) {
@@ -553,7 +638,14 @@ class _CommonDetailsPageState extends State<CommonDetailsPage>
                                                           borderRadius:
                                                               BorderRadius
                                                                   .circular(20),
-                                                          child: Navigator(
+                                                          child:
+                                                              /*   Container(
+                                                            color: Colors.amber,
+                                                            child:
+                                                                Text("test")), */
+                                                              //   ),
+
+                                                              Navigator(
                                                             key: Key('xx'),
                                                             onGenerateRoute:
                                                                 (routeSettings) {
@@ -570,6 +662,7 @@ class _CommonDetailsPageState extends State<CommonDetailsPage>
                                                                     //         ],
                                                                     //       )
                                                                     //     :
+
                                                                     DirectoryDetailOldest(
                                                                   folderName:
                                                                       "",
@@ -592,13 +685,13 @@ class _CommonDetailsPageState extends State<CommonDetailsPage>
                                                             widget.commonTodo,
                                                         isPrivate:
                                                             widget.isPrivate,
-                                                        toggleSheetClose: () {
-                                                          widget.toggleSheetClose!() ==
+                                                        /*    toggleSheetClose: () {
+                                                          widget.toggleSheetClose() ==
                                                                   null
                                                               ? null
                                                               : widget
                                                                   .toggleSheetClose!();
-                                                        },
+                                                        }, */
                                                       ),
                                                     ]
                                                     /*   : [

@@ -275,7 +275,7 @@ class _SignInPageV2State extends State<SignInPageV2> {
           backgroundColor: Colors.transparent,
           resizeToAvoidBottomInset: true,
           body: isLoading
-              ? Text("signin2") //CustomLoadingCircle()
+              ? CustomLoadingCircle()
               : SingleChildScrollView(
                   child: SafeArea(
                     child: Stack(

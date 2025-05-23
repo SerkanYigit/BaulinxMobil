@@ -241,9 +241,11 @@ class _CommonDetailEditPageState extends State<CommonDetailEditPage> {
           AppLocalizations.of(context)!.customdate
         ];
       });
-      await getLabelByUserId();
-      await getUserList();
-      await getDefinedRoleList();
+      if (mounted) {
+        await getLabelByUserId();
+        await getUserList();
+        await getDefinedRoleList();
+      }
     });
     super.initState();
   }
@@ -423,7 +425,9 @@ class _CommonDetailEditPageState extends State<CommonDetailEditPage> {
             LabelIds: LabelIds,
             UserId: _controllerDB.user.value!.result!.id!)
         .then((value) {
-      if (value) {}
+      if (value) {
+        print(value);
+      }
     });
   }
 
@@ -493,6 +497,7 @@ class _CommonDetailEditPageState extends State<CommonDetailEditPage> {
                         });
                       });
                     },
+
                     displayItem: (item, selected) {
                       return (Row(children: [
                         selected
@@ -545,7 +550,7 @@ class _CommonDetailEditPageState extends State<CommonDetailEditPage> {
                           },
                           child: Text(AppLocalizations.of(context)!.save)));
                     },
-                    closeButton: null,
+                    closeButton: Navigator.of(context).pop,
                     style: Get.theme.inputDecorationTheme.hintStyle,
                     searchFn: (String keyword, items) {
                       List<int> ret = <int>[];
@@ -1083,9 +1088,9 @@ class _CommonDetailEditPageState extends State<CommonDetailEditPage> {
                       await InviteUsersCommonTask(selectedUsers, SelectedRole!);
                       _controllerCalendar.refreshCalendar = true;
                       _controllerCalendar.update();
-                      widget.isDraggable
+                      /*  widget.isDraggable
                           ? Navigator.pop(context)
-                          : widget.toggleSheetClose!();
+                          : widget.toggleSheetClose!(); */
                     },
                     child: Align(
                       alignment: Alignment.centerRight,

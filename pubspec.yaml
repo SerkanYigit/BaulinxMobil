@@ -46,7 +46,7 @@ dependencies:
   path_provider: ^2.1.5
   file_picker: ^8.1.6
   flutter_plugin_android_lifecycle: ^2.0.24
-  audioplayers: ^6.1.0
+  audioplayers: ^6.1.2
   video_player: ^2.9.2
   awesome_notifications: ^0.10.0 # baska bir notification ile kullanma. flutter_local_notifications gibi.API sorunu var
   flutter_rating_bar: ^4.0.1
@@ -98,6 +98,7 @@ dependencies:
   syncfusion_flutter_calendar: ^28.1.36
   currency_text_input_formatter: ^2.2.6 #cakisma olursa asagidaki kodu ekle #dependency_overrides: #intl: your intl package version  
   rive: ^0.13.20
+  rive_common: ^0.4.15
   translator: ^1.0.3+1
   open_filex: ^4.6.0
   signature: ^5.5.0
@@ -137,7 +138,8 @@ dependencies:
   expandable_tile: ^1.0.4
 
  
-
+dependency_overrides:
+  js: any
 dev_dependencies:
   flutter_launcher_icons: "^0.14.3"
   flutter_test:

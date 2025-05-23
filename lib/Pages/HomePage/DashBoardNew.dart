@@ -1146,96 +1146,94 @@ AwesomeNotifications()
               ),
             ],
           ),
-          body: Expanded(
-            child: Padding(
-              padding: const EdgeInsets.all(1.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  /*      Padding(
-                    padding: const EdgeInsets.fromLTRB(18, 0, 0, 0),
-                    child: Text(
-                      AppLocalizations.of(context)!.users,
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontSize: 20,
-                      ),
+          body: Padding(
+            padding: const EdgeInsets.all(1.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                /*      Padding(
+                  padding: const EdgeInsets.fromLTRB(18, 0, 0, 0),
+                  child: Text(
+                    AppLocalizations.of(context)!.users,
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 20,
                     ),
-                  ), */
-                  //? Users
-                  /*   
-                  SizedBox(
-                    height: 60,
-                    child: isLoading == true
-                        ? const Center(child: CircularProgressIndicator())
-                        : _getUserListResult.result == null
-                            ? Container()
-                            : ListView.builder(
-                                padding: EdgeInsets.fromLTRB(18, 0, 0, 10),
-                                //   controller: _scrollController,
-                                scrollDirection: Axis.horizontal,
-                                itemCount:
-                                    _getUserListResult.result!.length,
-                                itemBuilder: (context, index) {
-                                  return _getUserListResult.result == null
-                                      ? Container(color: Colors.amber)
-                                      : DocumentUserPhoto(
-                                          onTap: () {
-                                            Navigator.of(context).push(
-                                                MaterialPageRoute(
-                                                    builder: (_) {
-                                              return ChatPage();
-                                            }));
-                                          },
-                                          urlPhoto: _getUserListResult
-                                              .result![index].photo,
-                                        );
-                                  /* CustomCircleAvatar(
-                                          urlImage: _getUserListResult
-                                                  .result![index].photo ??
-                                              'https://img.freepik.com/free-vector/smiling-redhaired-boy-illustration_1308-176664.jpg?t=st=1738863165~exp=1738866765~hmac=4edda2637afeeb8700348a491dab74195219452c13922c942a49afe2830ce8e6&w=1060',
-                                          title: "title $index",
-                                          backgroundColor: Colors.white,
-                                          onPressed: () {}); */
-                                }),
                   ),
-           */
-                  //? Yatay butonlar
-                  /*   Padding(
-                    padding: const EdgeInsets.fromLTRB(18, 10, 0, 0),
-                    child: Text(
-                      AppLocalizations.of(context)!.setModule,
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontSize: 20,
-                      ),
+                ), */
+                //? Users
+                /*   
+                SizedBox(
+                  height: 60,
+                  child: isLoading == true
+                      ? const Center(child: CircularProgressIndicator())
+                      : _getUserListResult.result == null
+                          ? Container()
+                          : ListView.builder(
+                              padding: EdgeInsets.fromLTRB(18, 0, 0, 10),
+                              //   controller: _scrollController,
+                              scrollDirection: Axis.horizontal,
+                              itemCount:
+                                  _getUserListResult.result!.length,
+                              itemBuilder: (context, index) {
+                                return _getUserListResult.result == null
+                                    ? Container(color: Colors.amber)
+                                    : DocumentUserPhoto(
+                                        onTap: () {
+                                          Navigator.of(context).push(
+                                              MaterialPageRoute(
+                                                  builder: (_) {
+                                            return ChatPage();
+                                          }));
+                                        },
+                                        urlPhoto: _getUserListResult
+                                            .result![index].photo,
+                                      );
+                                /* CustomCircleAvatar(
+                                        urlImage: _getUserListResult
+                                                .result![index].photo ??
+                                            'https://img.freepik.com/free-vector/smiling-redhaired-boy-illustration_1308-176664.jpg?t=st=1738863165~exp=1738866765~hmac=4edda2637afeeb8700348a491dab74195219452c13922c942a49afe2830ce8e6&w=1060',
+                                        title: "title $index",
+                                        backgroundColor: Colors.white,
+                                        onPressed: () {}); */
+                              }),
+                ),
+                     */
+                //? Yatay butonlar
+                /*   Padding(
+                  padding: const EdgeInsets.fromLTRB(18, 10, 0, 0),
+                  child: Text(
+                    AppLocalizations.of(context)!.setModule,
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 20,
                     ),
-                  ), */
-                  Padding(
-                    padding: const EdgeInsets.fromLTRB(18, 20, 18, 10),
-                    child: yatayIkonlar(),
                   ),
-                  //? Dikey Card Widget
-                  _commonGroup.isNotEmpty
-                      ? SingleChildScrollView(
-                          child: Container(
-                            color: Colors.white,
-                            height: 600,
-                            child: CardWidgetHomePageVertical(
-                              selectedCommonGroupId: selectedCommonGroupId,
-                              commonGroup: _commonGroup,
-                              commons: _commons,
-                              commonBoardListItemm: commonBoardListItemm,
-                              scrollController: _scrollController,
-                            ),
+                ), */
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(18, 20, 18, 10),
+                  child: yatayIkonlar(),
+                ),
+                //? Dikey Card Widget
+                _commonGroup.isNotEmpty
+                    ? SingleChildScrollView(
+                        child: Container(
+                          color: Colors.white,
+                          height: 600,
+                          child: CardWidgetHomePageVertical(
+                            selectedCommonGroupId: selectedCommonGroupId,
+                            commonGroup: _commonGroup,
+                            commons: _commons,
+                            commonBoardListItemm: commonBoardListItemm,
+                            scrollController: _scrollController,
                           ),
-                        )
-                      : Container(
-                          child: Text("Error"),
-                          color: Colors.amber,
                         ),
-                ],
-              ),
+                      )
+                    : Container(
+                        child: Text("Error"),
+                        color: Colors.amber,
+                      ),
+              ],
             ),
           ));
     });

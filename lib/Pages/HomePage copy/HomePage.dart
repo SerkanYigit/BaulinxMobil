@@ -1378,11 +1378,9 @@ AwesomeNotifications()
 
               Consumer<DraggableSheetController>(
                 builder: (context, controller, child) {
-                  // if (!controller.isSheetOpen ||
-                  //     controller.boardTodo == null ||
-                  //     controller.commonBoardListItem == null) {
-                  //   return SizedBox.shrink();
-                  // }
+                  if (!controller.isSheetOpen) {
+                    return SizedBox.shrink();
+                  }
 
                   return NotificationListener<DraggableScrollableNotification>(
                       onNotification: (notification) {
@@ -1452,7 +1450,9 @@ AwesomeNotifications()
                                               controller
                                                   .commonBoardListItem.id!,
                                             ),
-                                        toggleSheetClose: controller.closeSheet,
+                                        toggleSheetClose:
+                                            draggableSheetController.closeSheet,
+                                        //controller.closeSheet,
                                         togglePlay: true,
                                         isPrivate: isPrivate,
                                         refreshPage: true,
@@ -1628,12 +1628,11 @@ AwesomeNotifications()
 
                         return GestureDetector(
                           onTap: () {
-                            /*
                             draggableSheetController.updateBoardTodoAndListItem(
                                 commonBoardListItem.todos[index],
                                 commonBoardListItem);
                             draggableSheetController.toggleSheet();
-                        */
+
                             Navigator.of(context).push(
                               MaterialPageRoute(
                                 builder: (context) => CommonDetailsPage(
@@ -1656,7 +1655,8 @@ AwesomeNotifications()
                                               .hasFileManagerCommonPerm(
                                             commonBoardListItem.id!,
                                           ),
-                                  //  toggleSheetClose: commonBoardListItem.closeSheet,
+                                  toggleSheetClose:
+                                      draggableSheetController.closeSheet,
                                   togglePlay: true,
                                   isPrivate: false,
                                   refreshPage: true,

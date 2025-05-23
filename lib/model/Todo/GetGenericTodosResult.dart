@@ -65,7 +65,7 @@ class GenericTodo {
   List<LabelList>? labelList;
   int? orderNumber;
   List<UserList>? userList;
-  Null color;
+  String? color;
   String? backgroundImage;
   GetTodoCheckListResult? checkList;
 
@@ -124,7 +124,7 @@ class GenericTodo {
       });
     }
     orderNumber = json['OrderNumber'];
-    color = json['Color'];
+    color = json['Color'] ?? "b3c1a8";
     backgroundImage = json['BackgroundImage'];
   }
 

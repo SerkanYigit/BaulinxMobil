@@ -173,7 +173,7 @@ class _DirectoryDetailState extends State<DirectoryDetailOldest> {
       selectedLabelIndexes.clear();
       selectedLabelsColor.clear();
       selectedLabels.clear();
-      print('Selected Indexes:s:' + value.result!.first.labelId.toString());
+      //   print('Selected Indexes:s:' + value.result!.first.labelId.toString());
       if (value.result != null && value.result!.length > 0) {
         setState(() {
           value.result!.forEach((label) {
@@ -1783,11 +1783,12 @@ class _DirectoryDetailState extends State<DirectoryDetailOldest> {
                                 width: 27,
                               ),
                             ),
-                            Row(
+                            /*  Row(
                               children: item.labelList!.map((e) {
-                                return Row(
+                                return 
+                                Row(
                                   children: [
-                                    Positioned(
+                                    /*    Positioned(
                                       top: 10,
                                       left: 5,
                                       child: Image.asset(
@@ -1796,11 +1797,11 @@ class _DirectoryDetailState extends State<DirectoryDetailOldest> {
                                         height: 25,
                                         color: HexColor(e.color!),
                                       ),
-                                    ),
+                                    ), */
                                   ],
                                 );
                               }).toList(), // Convert the iterable to a list
-                            ),
+                            ), */
                             Positioned(
                               top: 0,
                               child: Stack(

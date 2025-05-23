@@ -214,8 +214,8 @@ class DashCard extends StatelessWidget {
                 ),
               ),
              */
-
-              Expanded(
+//? USERS FOTO
+              /*  Expanded(
                 child: Container(
                   width: 300,
                   // height: 100,
@@ -235,7 +235,7 @@ class DashCard extends StatelessWidget {
                         );
                       }),
                 ),
-              )
+              ) */
             ],
           ),
         ),
